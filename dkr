@@ -1,0 +1,30 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily run common docker
+# commands
+#
+# requirements:
+#   - docker
+##############################
+
+USAGE="USAGE: drk ACTION
+
+Actions:
+  s, stop   Stop all containers
+  h, help   Print this guide
+"
+print_usage() { echo "$USAGE"; }
+
+stop_containers() { docker ps | awk '{ print $1 }' | tail -n +2 | xargs docker stop 2>/dev/null; }
+list_containers() { docker ps --format "table {{.Image}}\t{{.State}}"; }
+
+COMMAND="$1"
+
+case "$COMMAND" in
+s | stop) stop_containers ;;
+l | list) list_containers ;;
+h | help | *) print_usage ;;
+esac
