@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily run common
+# docker-compose commands
+#
+# requirements:
+#   - docker-compose
+##############################
+
+USAGE="USAGE: dkc ACTION [CONTAINER...]
+
+Actions:
+  r, run  [CONTAINER...]  Run all or specified container
+  s, stop [CONTAINER...]  Stop all or specified containers
+  h, help                 Print this guide
+"
+print_usage() { echo "$USAGE"; }
+
+run_containers() { docker-compose up -d "$@"; }
+stop_containers() { docker-compose stop "$@"; }
+list_containers() {
+	docker-compose ps --format json |
+		jq -r '["Container","Status"], ["---------", "------"], (.[] | [.Name,.State]) | @tsv'
+}
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+l | list) list_containers ;;
+r | run) run_containers "$@" ;;
+s | stop) stop_containers "$@" ;;
+h | help | *) print_usage ;;
+esac
