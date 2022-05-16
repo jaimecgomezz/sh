@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily set custom keyboard
+# variants
+#
+# requirements:
+#   - setxkbmap
+##############################
+
+USAGE="USAGE: skb [KB]
+
+Actions:
+  us        US altgr-intl, default.
+  h, help   Print this guide
+"
+print_usage() { echo "$USAGE"; }
+
+us_kb() { setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'; }
+
+KB="${1:-us}"
+
+case "$KB" in
+us) us_kb ;;
+h | help | *) print_usage ;;
+esac
