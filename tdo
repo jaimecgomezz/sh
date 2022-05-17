@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily access man pages in
+# their PDF format
+#
+# Requires:
+#   - fzf
+#   - man
+#   - zathura (pdf support)
+##############################
+
+TASKS="$HOME/tasks"
+
+USAGE="Usage: tdo [TASK]
+TASK
+  *         Add/delete task
+  -         Enter REPL mode
+  h, help   Print this help"
+print_usage() {
+	echo "$USAGE"
+	exit 0
+}
+
+tasks_repl() {
+	task="$(fzf -e +m --tac --print-query --cycle --prompt="task " <"$TASKS" | tr -d '\n')"
+	[ -n "$task" ] || exit 1
+	tdo "$task"
+	exit 0
+}
+
+TASK="$1"
+
+case "$1" in
+h | help) print_usage ;;
+-) tasks_repl ;;
+esac
+
+TASK="$*"
+
+if grep "^${TASK}$" <"$TASKS"; then
+	for e in $TASK; do
+		sed -i "\|${e}|d" "$TASKS"
+	done
+else
+	echo "$TASK" >>"$TASKS"
+fi
+
+sed -i -e '/^$/d' -e '/^ *$/d' "$TASKS"
+tdo -
