@@ -22,8 +22,9 @@ Notification
 print_usage() { echo "$USAGE"; }
 
 notify_date() { notify-send -t 10000 "date" "$(date)"; }
+
 notifications_repl() {
-	if notification="$(echo "$NOTIFICATIONS" | fzf -e +m --cycle --prompt="nfy ")"; then
+	if notification="$(echo "$NOTIFICATIONS" | fzf)"; then
 		nfy "$notification"
 		exit 0
 	else
@@ -31,8 +32,12 @@ notifications_repl() {
 	fi
 }
 
+if [ -z "$1" ]; then
+	notifications_repl
+	exit "$?"
+fi
+
 case "$1" in
--) notifications_repl ;;
 d | date) notify_date ;;
 h | help | *) print_usage ;;
 esac
