@@ -40,7 +40,7 @@ deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
 activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
 
 blks_repl() {
-	if action="$(printf "%s\n%s" "activate" "deactivate" | fzf -e +m --cycle --prompt="blk ")"; then
+	if action="$(printf "%s\n%s" "activate" "deactivate" | fzf)"; then
 		blk "$action"
 		exit "$?"
 	else
