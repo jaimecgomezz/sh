@@ -25,7 +25,7 @@ run_containers() { docker-compose up -d "$@"; }
 stop_containers() { docker-compose stop "$@"; }
 list_containers() { docker-compose ps --format json | jq -r '["Container","Status"], ["---------", "------"], (.[] | [.Name,.State]) | @tsv'; }
 
-actions_repl() {
+if [ -z "$1" ]; then
 	actions="$(printf "%s\n%s\n%s" "list" "up" "stop")"
 	if action="$(echo "$actions" | fzf)"; then
 		dkc "$action"
@@ -33,11 +33,6 @@ actions_repl() {
 	else
 		exit 1
 	fi
-}
-
-if [ -z "$1" ]; then
-	actions_repl
-	exit "$?"
 fi
 
 COMMAND="$1"

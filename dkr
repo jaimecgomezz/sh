@@ -23,7 +23,7 @@ print_usage() { echo "$USAGE"; }
 stop_containers() { docker ps | awk '{ print $1 }' | tail -n +2 | xargs docker stop 2>/dev/null; }
 list_containers() { docker ps --format "table {{.Image}}\t{{.State}}"; }
 
-actions_repl() {
+if [ -z "$1" ]; then
 	actions="$(printf "%s\n%s" "list" "stop")"
 	if action="$(echo "$actions" | fzf)"; then
 		dkr "$action"
@@ -31,11 +31,6 @@ actions_repl() {
 	else
 		exit 1
 	fi
-}
-
-if [ -z "$1" ]; then
-	actions_repl
-	exit "$?"
 fi
 
 case "$1" in

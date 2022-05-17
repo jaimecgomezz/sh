@@ -39,18 +39,13 @@ print_usage() { echo "$USAGE"; }
 deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
 activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
 
-blks_repl() {
+if [ -z "$1" ]; then
 	if action="$(printf "%s\n%s" "activate" "deactivate" | fzf)"; then
 		blk "$action"
 		exit "$?"
 	else
 		exit 1
 	fi
-}
-
-if [ -z "$1" ]; then
-	blks_repl
-	exit "$?"
 fi
 
 case "$1" in

@@ -11,8 +11,6 @@
 #   - notify-send
 ##############################
 
-NOTIFICATIONS="date"
-
 USAGE="Usage: nfy [Notification]
 
 Notification
@@ -23,18 +21,14 @@ print_usage() { echo "$USAGE"; }
 
 notify_date() { notify-send -t 10000 "date" "$(date)"; }
 
-notifications_repl() {
-	if notification="$(echo "$NOTIFICATIONS" | fzf)"; then
+if [ -z "$1" ]; then
+	notifications="date"
+	if notification="$(echo "$notifications" | fzf)"; then
 		nfy "$notification"
-		exit 0
+		exit "$?"
 	else
 		exit 1
 	fi
-}
-
-if [ -z "$1" ]; then
-	notifications_repl
-	exit "$?"
 fi
 
 case "$1" in

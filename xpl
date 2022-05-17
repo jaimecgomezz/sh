@@ -21,7 +21,7 @@ print_usage() { echo "$USAGE"; }
 explain_page() { echo "$1" | sed 's/\ \+-.*//' | xargs man -Tpdf 2>/dev/null | zathura -; }
 
 if [ -z "$1" ]; then
-	if page="$(man -k . | fzf -e +m --cycle -q "^" --prompt="man ")"; then
+	if page="$(man -k . | fzf -q "^")"; then
 		xpl "$page"
 		exit 0
 	else
@@ -29,9 +29,7 @@ if [ -z "$1" ]; then
 	fi
 fi
 
-PAGE="$1"
-
-case "$PAGE" in
+case "$1" in
 h | help) print_usage ;;
-*) explain_page "$PAGE" & ;;
+*) explain_page "$1" & ;;
 esac
