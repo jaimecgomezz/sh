@@ -14,39 +14,35 @@
 
 TASKS="$HOME/tasks"
 
-USAGE="Usage: tdo [TASK]
+USAGE="Usage: tdo [Task]
 TASK
-  *         Add/delete task
-  -         Enter REPL mode
+  -         Enter interactive mode
+  [Task]    Add/delete task
   h, help   Print this help"
-print_usage() {
-	echo "$USAGE"
-	exit 0
+print_usage() { echo "$USAGE"; }
+
+handle_task() {
+	TASK="$*"
+	if grep "^${TASK}$" <"$TASKS"; then
+		for e in $TASK; do
+			sed -i "\|${e}|d" "$TASKS"
+		done
+	else
+		echo "$TASK" >>"$TASKS"
+		sed -i -e '/^$/d' -e '/^ *$/d' "$TASKS"
+	fi
+
+	tdo
 }
 
-tasks_repl() {
-	task="$(fzf -e +m --tac --print-query --cycle --prompt="task " <"$TASKS" | tr -d '\n')"
+if [ -z "$1" ]; then
+	task="$(fzf --print-query <"$TASKS" | tr -d '\n')"
 	[ -n "$task" ] || exit 1
 	tdo "$task"
 	exit 0
-}
-
-TASK="$1"
+fi
 
 case "$1" in
 h | help) print_usage ;;
--) tasks_repl ;;
+*) handle_task "$@" ;;
 esac
-
-TASK="$*"
-
-if grep "^${TASK}$" <"$TASKS"; then
-	for e in $TASK; do
-		sed -i "\|${e}|d" "$TASKS"
-	done
-else
-	echo "$TASK" >>"$TASKS"
-fi
-
-sed -i -e '/^$/d' -e '/^ *$/d' "$TASKS"
-tdo -
