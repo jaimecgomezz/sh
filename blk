@@ -30,6 +30,7 @@ BLKS="
 USAGE="Usage: blk [Action]
 
 Action
+  -               Enter interactive mode
   a, activate     Enables blocker
   d, deactivate   Disables current blocker
   h, help         Print this help"
