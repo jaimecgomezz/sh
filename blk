@@ -1,0 +1,59 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily block pages
+#
+# Requires:
+#   - fzf
+#   - sux (custom script)
+##############################
+
+HOSTS=/etc/hosts
+BASE="
+::1       localhost
+127.0.0.1 localhost loopback"
+BLKS="
+0.0.0.0 www.reddit.com
+0.0.0.0 reddit.com
+0.0.0.0 www.youtube.com
+0.0.0.0 youtube.com
+0.0.0.0 www.facebook.com
+0.0.0.0 facebook.com
+0.0.0.0 www.twitter.com
+0.0.0.0 twitter.com
+0.0.0.0 www.instagram.com
+0.0.0.0 instagram.com
+"
+
+USAGE="Usage: blk [Action]
+
+Action
+  a, activate     Enables blocker
+  d, deactivate   Disables current blocker
+  h, help         Print this help"
+print_usage() { echo "$USAGE"; }
+
+deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
+activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
+
+blks_repl() {
+	if action="$(printf "%s\n%s" "activate" "deactivate" | fzf -e +m --cycle --prompt="blk ")"; then
+		blk "$action"
+		exit "$?"
+	else
+		exit 1
+	fi
+}
+
+if [ -z "$1" ]; then
+	blks_repl
+	exit "$?"
+fi
+
+case "$1" in
+a | activate) activate_blk ;;
+d | deactivate) deactivate_blk ;;
+h | help | *) print_usage ;;
+esac
