@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily access man pages in
+# their PDF format
+#
+# Requires:
+#   - fzf
+#   - notify-send
+##############################
+
+NOTIFICATIONS="date"
+
+USAGE="Usage: nfy [Notification]
+
+Notification
+  -         Enter interactive mode
+  d, date   Notify curent datetime
+  h, help   Print this help"
+print_usage() { echo "$USAGE"; }
+
+notify_date() { notify-send -t 10000 "date" "$(date)"; }
+notifications_repl() {
+	if notification="$(echo "$NOTIFICATIONS" | fzf -e +m --cycle --prompt="nfy ")"; then
+		nfy "$notification"
+		exit 0
+	else
+		exit 1
+	fi
+}
+
+case "$1" in
+-) notifications_repl ;;
+d | date) notify_date ;;
+h | help | *) print_usage ;;
+esac
