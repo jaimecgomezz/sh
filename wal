@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily switch wallpapers
+#
+# Requires:
+#   - fzf
+#   - hsetroot
+##############################
+
+WALLPAPERS="${HOME}/pictures/walls"
+
+USAGE="Usage: wal [Theme]
+
+Theme
+  *         Every folder under your wallpapers folder
+  h, help   Print this help"
+print_usage() { echo "$USAGE"; }
+
+wals_repl() {
+	theme="$1"
+	if wal="$(find "$WALLPAPERS/$theme"/* -maxdepth 1 -type f -printf '%f\n' | fzf -e +m --cycle --prompt="wal ")"; then
+		hsetroot -cover "$WALLPAPERS/$theme/$wal" >/dev/null
+	else
+		exit 1
+	fi
+}
+
+themes_repl() {
+	if theme="$(find "$WALLPAPERS"/* -maxdepth 1 -type d -printf '%f\n' | fzf -e +m --cycle --prompt="theme ")"; then
+		wal "$theme"
+		exit "$?"
+	else
+		exit 1
+	fi
+}
+
+if [ -z "$1" ]; then
+	themes_repl
+else
+	wals_repl "$1"
+fi
