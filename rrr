@@ -1,0 +1,46 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Easily list and run scripts
+#
+# Requires:
+#   - fzf
+##############################
+
+SCRIPTS="$HOME/scripts"
+
+USAGE="Usage: rrr [Script]
+
+Script
+  *         Any valid script
+  -         Enter interactive mode
+  h, help   Print this help"
+print_usage() { echo "$USAGE"; }
+
+scripts_repl() {
+	if script="$(find "$SCRIPTS"/* -type f -executable -printf '%f\n' | fzf -e +m --cycle --prompt="script ")"; then
+		rrr "$script"
+		exit "$?"
+	else
+		exit 1
+	fi
+}
+
+run_script() {
+	script="$1"
+	[ -x "$script" ] || exit 1
+	"$script"
+	exit "$?"
+}
+
+if [ -z "$1" ]; then
+	scripts_repl
+	exit "$?"
+fi
+
+case "$1" in
+h | help) print_usage ;;
+*) run_script "$1" ;;
+esac
