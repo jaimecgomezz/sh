@@ -13,16 +13,28 @@
 USAGE="USAGE: skb [KB]
 
 Actions:
-  us        US altgr-intl, default.
+  -         Enter interactive mode
+  us        US altgr-intl, default
+  mx        Spanish, latam
   h, help   Print this guide
 "
 print_usage() { echo "$USAGE"; }
 
+mx_kb() { setxkbmap latam -option 'ctrl:nocaps'; }
 us_kb() { setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'; }
 
-KB="${1:-us}"
+if [ -z "$1" ]; then
+	keyboards="$(printf "%s\n%s" "us" "mx")"
+	if kb="$(echo "$keyboards" | fzf)"; then
+		skb "$kb"
+		exit "$?"
+	else
+		exit 1
+	fi
+fi
 
-case "$KB" in
+case "$1" in
 us) us_kb ;;
+mx) mx_kb ;;
 h | help | *) print_usage ;;
 esac
