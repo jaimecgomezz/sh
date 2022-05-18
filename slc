@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Select interactively based
@@ -9,10 +9,10 @@
 # Requires:
 #   - fzf
 #   - dmenu
-##############################
-
+#------------------------ vars
 FZF="${FZF:-fzf}"
 DMENU="${DMENU:-dmenu}"
+#-----------------------------
 
 USAGE="Usage: slc PARENT [ARG...]
 
@@ -21,7 +21,10 @@ Parent
   *         Triggers fzf selector"
 print_usage() { echo "$USAGE"; }
 
-case "$1" in
-systemd) $DMENU ;;
-*) $FZF ;;
+PARENT="$1"
+shift
+
+case "$PARENT" in
+systemd) $DMENU "$@" ;;
+*) $FZF "$@" ;;
 esac
