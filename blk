@@ -42,7 +42,7 @@ deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
 activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
 
 if [ -z "$1" ]; then
-	if action="$(printf "%s\n%s" "activate" "deactivate" | slc "$PNAME")"; then
+	if action="$(printf "%s\n%s" "activate" "deactivate" | slc)"; then
 		blk "$action"
 		exit "$?"
 	else

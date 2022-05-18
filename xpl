@@ -23,7 +23,7 @@ print_usage() { echo "$USAGE"; }
 explain_page() { echo "$1" | sed 's/\ \+-.*//' | xargs man -Tpdf 2>/dev/null | zathura -; }
 
 if [ -z "$1" ]; then
-	if page="$(man -k . | slc "$PNAME" -filter "^" -matching "regex")"; then
+	if page="$(man -k . | slc -filter "^" -matching "regex")"; then
 		xpl "$page"
 		exit 0
 	else

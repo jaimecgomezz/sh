@@ -28,7 +28,7 @@ list_containers() { docker ps --format "table {{.Image}}\t{{.State}}"; }
 
 if [ -z "$1" ]; then
 	actions="$(printf "%s\n%s" "list" "stop")"
-	if action="$(echo "$actions" | slc "$PNAME")"; then
+	if action="$(echo "$actions" | slc)"; then
 		dkr "$action"
 		exit "$?"
 	else

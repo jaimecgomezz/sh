@@ -28,7 +28,7 @@ us_kb() { setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'; }
 
 if [ -z "$1" ]; then
 	keyboards="$(printf "%s\n%s" "us" "mx")"
-	if kb="$(echo "$keyboards" | slc "$PNAME")"; then
+	if kb="$(echo "$keyboards" | slc)"; then
 		skb "$kb"
 		exit "$?"
 	else

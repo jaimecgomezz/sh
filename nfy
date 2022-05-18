@@ -25,7 +25,7 @@ notify_date() { notify-send -t 10000 "date" "$(date)"; }
 
 if [ -z "$1" ]; then
 	notifications="date"
-	if notification="$(echo "$notifications" | slc "$PNAME")"; then
+	if notification="$(echo "$notifications" | slc)"; then
 		nfy "$notification"
 		exit "$?"
 	else

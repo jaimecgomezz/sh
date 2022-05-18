@@ -22,7 +22,7 @@ Script
 print_usage() { echo "$USAGE"; }
 
 if [ -z "$1" ]; then
-	if script="$(find "$SCRIPTS"/* -type f -executable -printf '%f\n' | slc "$PNAME")"; then
+	if script="$(find "$SCRIPTS"/* -type f -executable -printf '%f\n' | slc)"; then
 		rrr "$script"
 		exit "$?"
 	else

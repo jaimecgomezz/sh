@@ -30,7 +30,7 @@ list_containers() { docker-compose ps --format json | jq -r '["Container","Statu
 
 if [ -z "$1" ]; then
 	actions="$(printf "%s\n%s\n%s" "list" "up" "stop")"
-	if action="$(echo "$actions" | slc "$PNAME")"; then
+	if action="$(echo "$actions" | slc)"; then
 		dkc "$action"
 		exit "$?"
 	else

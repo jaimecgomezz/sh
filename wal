@@ -29,7 +29,7 @@ print_usage() { echo "$USAGE"; }
 set_wal() { hsetroot -cover "$WALLPAPERS/$1/$2" >/dev/null; }
 
 if [ -z "$1" ]; then
-	if theme="$(find "$WALLPAPERS"/* -maxdepth 1 -type d -printf '%f\n' | slc "$PNAME")"; then
+	if theme="$(find "$WALLPAPERS"/* -maxdepth 1 -type d -printf '%f\n' | slc)"; then
 		wal "$theme"
 		exit "$?"
 	else
@@ -38,7 +38,7 @@ if [ -z "$1" ]; then
 else
 	theme="$1"
 	if [ -z "$2" ]; then
-		if wal="$(find "$WALLPAPERS/$theme"/* -maxdepth 1 -type f -printf '%f\n' | slc "$PNAME")"; then
+		if wal="$(find "$WALLPAPERS/$theme"/* -maxdepth 1 -type f -printf '%f\n' | slc)"; then
 			set_wal "$theme" "$wal"
 		else
 			exit 1

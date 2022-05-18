@@ -9,22 +9,20 @@
 # Requires:
 #   - fzf
 #   - dmenu
+#------------------- protected
+PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
 FZF="${FZF:-fzf}"
 DMENU="${DMENU:-dmenu}"
 #-----------------------------
 
-USAGE="Usage: slc PARENT [ARG...]
+USAGE="Usage: slc [ARG...]
 
-Parent
-  systemd   Triggers dmenu selector
-  *         Triggers fzf selector"
+Arg
+  Any parameter is forwarded to the selector"
 print_usage() { echo "$USAGE"; }
 
-PARENT="$1"
-shift
-
-case "$PARENT" in
+case "$PNAME" in
 systemd) $DMENU "$@" ;;
 *) $FZF "$@" ;;
 esac
