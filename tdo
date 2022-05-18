@@ -1,15 +1,17 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Simple todo list
 #
 # Requires:
-#   - fzf
-##############################
-
+#   - slc (custom)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#------------------------ vars
 TASKS="$HOME/tasks"
+#-----------------------------
 
 USAGE="Usage: tdo [Task]
 TASK
@@ -33,7 +35,7 @@ handle_task() {
 }
 
 if [ -z "$1" ]; then
-	task="$(fzf --print-query <"$TASKS" | tr -d '\n')"
+	task="$(slc "$PNAME" --print-query <"$TASKS" | tr -d '\n')"
 	[ -n "$task" ] || exit 1
 	tdo "$task"
 	exit 0

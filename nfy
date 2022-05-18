@@ -1,15 +1,17 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Easily send predefined
 # notifications
 #
 # Requires:
-#   - fzf
+#   - slc (custom)
 #   - notify-send
-##############################
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
 
 USAGE="Usage: nfy [Notification]
 
@@ -23,7 +25,7 @@ notify_date() { notify-send -t 10000 "date" "$(date)"; }
 
 if [ -z "$1" ]; then
 	notifications="date"
-	if notification="$(echo "$notifications" | fzf)"; then
+	if notification="$(echo "$notifications" | slc "$PNAME")"; then
 		nfy "$notification"
 		exit "$?"
 	else

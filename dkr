@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Easily run common docker
@@ -8,7 +8,10 @@
 #
 # requirements:
 #   - docker
-##############################
+#   - slc (custom)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
 
 USAGE="USAGE: drk ACTION
 
@@ -25,7 +28,7 @@ list_containers() { docker ps --format "table {{.Image}}\t{{.State}}"; }
 
 if [ -z "$1" ]; then
 	actions="$(printf "%s\n%s" "list" "stop")"
-	if action="$(echo "$actions" | fzf)"; then
+	if action="$(echo "$actions" | slc "$PNAME")"; then
 		dkr "$action"
 		exit "$?"
 	else

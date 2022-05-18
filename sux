@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Run commands as sudo
 #
 # Requires:
 #   - pkexec
-##############################
+#-----------------------------
 
 # grant agent is running
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 2>/dev/null &

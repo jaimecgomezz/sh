@@ -1,15 +1,16 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Easily block pages
 #
 # Requires:
-#   - fzf
-#   - sux (custom script)
-##############################
-
+#   - sux (custom)
+#   - slc (custom)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#------------------------ vars
 HOSTS=/etc/hosts
 BASE="
 ::1       localhost
@@ -26,6 +27,7 @@ BLKS="
 0.0.0.0 www.instagram.com
 0.0.0.0 instagram.com
 "
+#-----------------------------
 
 USAGE="Usage: blk [Action]
 
@@ -40,7 +42,7 @@ deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
 activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
 
 if [ -z "$1" ]; then
-	if action="$(printf "%s\n%s" "activate" "deactivate" | fzf)"; then
+	if action="$(printf "%s\n%s" "activate" "deactivate" | slc "$PNAME")"; then
 		blk "$action"
 		exit "$?"
 	else

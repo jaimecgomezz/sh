@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-##############################
+#-----------------------------
 # @jaimecgomezz
 #
 # Easily set custom keyboard
@@ -8,11 +8,14 @@
 #
 # requirements:
 #   - setxkbmap
-##############################
+#   - slc (custom)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
 
 USAGE="USAGE: skb [KB]
 
-Actions:
+KB
   -         Enter interactive mode
   us        US altgr-intl, default
   mx        Spanish, latam
@@ -25,7 +28,7 @@ us_kb() { setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'; }
 
 if [ -z "$1" ]; then
 	keyboards="$(printf "%s\n%s" "us" "mx")"
-	if kb="$(echo "$keyboards" | fzf)"; then
+	if kb="$(echo "$keyboards" | slc "$PNAME")"; then
 		skb "$kb"
 		exit "$?"
 	else
