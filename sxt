@@ -10,6 +10,8 @@
 #   - lok (custom)
 #   - systemctl
 #   - i3
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
 USAGE="Usage: sxt [Action]
