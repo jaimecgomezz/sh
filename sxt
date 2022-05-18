@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+#-----------------------------
+# @jaimecgomezz
+#
+# System exit manager
+#
+# Requires:
+#   - slc (custom)
+#   - lok (custom)
+#   - systemctl
+#   - i3
+#-----------------------------
+
+USAGE="Usage: sxt [Action]
+
+Action
+  -             Enter interactive mode
+  l, lock       Lock screen
+  s, suspend    Suspend system
+  r, reboot     Reboot system
+  S, shutdown   Shutdown system
+  e, exit       Exit WM
+  h, help       Print this guide"
+print_usage() { echo "$USAGE"; }
+
+if [ -z "$1" ]; then
+	actions="$(printf "%s\n%s\n%s\n%s\n%s" "lock" "suspend" "reboot" "shutdown" "exit")"
+	if action="$(echo "$actions" | slc)"; then
+		sxt "$action"
+		exit "$?"
+	else
+		exit 1
+	fi
+fi
+
+case "$1" in
+l | lock) lok ;;
+s | suspend) lok && systemctl suspend ;;
+r | reboot) systemctl reboot ;;
+S | shutdown) systemctl poweroff ;;
+e | exit) i3-msg exit ;;
+h | help | *) print_usage ;;
+esac
