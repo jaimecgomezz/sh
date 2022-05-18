@@ -9,7 +9,7 @@
 #   - fzf
 ##############################
 
-SCRIPTS="$HOME/scripts"
+SCRIPTS="$HOME/sh"
 
 USAGE="Usage: rrr [Script]
 

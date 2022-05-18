@@ -3,13 +3,10 @@
 ##############################
 # @jaimecgomezz
 #
-# Easily access man pages in
-# their PDF format
+# Simple todo list
 #
 # Requires:
 #   - fzf
-#   - man
-#   - zathura (pdf support)
 ##############################
 
 TASKS="$HOME/tasks"
