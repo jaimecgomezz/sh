@@ -1,8 +1,6 @@
 # sh
 collection of personal scripts
 
-## Scripts
-
 - [blk](blk): Easily block internet pages
 - [dkc](dkc): Easily run common [docker compose](https://docs.docker.com/compose/) commands
 - [dkr](dkr): Easily run common [docker](https://www.docker.com/) commands
