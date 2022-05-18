@@ -1,22 +1,26 @@
 # sh
 collection of personal scripts
 
-- [blk](blk): Easily block internet pages
-- [dkc](dkc): Easily run common [docker compose](https://docs.docker.com/compose/) commands
-- [dkr](dkr): Easily run common [docker](https://www.docker.com/) commands
-- [fch](fch): A fetch written in posix shell without any external commands ([source](https://github.com/6gk/fet.sh))
-- [lok](lok): Custom screen locker using [i3lock-color](https://github.com/Raymo111/i3lock-color), inpired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
+- [blk](blk): Easily block internet pages.
+- [dkc](dkc): Easily run common Docker Compose commands.
+- [dkr](dkr): Easily run common Docker commands.
+- [fch](fch): A fetch written in POSIX shell without any external commands. [Source](https://github.com/6gk/fet.sh).
+- [lok](lok): Lock screen. Inspired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
 - [skb](skb): Easily set your keyboard layout
-- [sux](sux): Run scripts as sudo
-- [tdo](tdo): Simple todo list
-- [wal](wal): Easily set your wallpaper. See [walls](https://github.com/jaimecgomezz/walls)
-- [xpl](xpl): Easily access [man pages](https://www.kernel.org/doc/man-pages/) in their PDF format
-- [nfy](nfy): Easily send predefined notifications
+- [sux](sux): Run scripts as sudo.
+- [tdo](tdo): Simple to-do list.
+- [wal](wal): Easily set your wallpaper. See [walls](https://github.com/jaimecgomezz/walls).
+- [xpl](xpl): Easily access man pages in their PDF format.
+- [nfy](nfy): Easily send predefined notifications.
 - [rrr](rrr): Easily run any of this scripts.
-- [slc](slc): Select interactively based on context, either with [dmenu](https://tools.suckless.org/dmenu/) of [fzf](https://github.com/junegunn/fzf)
+- [slc](slc): Select interactively based on caller context
 - [sxt](sxt): System exit manager
 
 ## Installation
+
+### Requirements
+
+[i3lock-color](https://github.com/Raymo111/i3lock-color), [notify-send](https://github.com/vlevit/notify-send.sh), [setxkbmap](https://github.com/freedesktop/xorg-setxkbmap),  [dmenu](https://tools.suckless.org/dmenu/), [fzf](https://github.com/junegunn/fzf), [polkit](https://gitlab.freedesktop.org/polkit/polkit), [systemd](https://github.com/systemd/systemd), [hsetroot](https://github.com/himdel/hsetroot), [man](https://www.kernel.org/doc/man-pages/) and [zathura](https://git.pwmt.org/pwmt/zathura) with [pdf support](https://git.pwmt.org/pwmt/zathura-pdf-mupdf).
 
 To quickly make them available, simply add the folder to the `PATH`.
 

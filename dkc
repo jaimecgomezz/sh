@@ -7,7 +7,6 @@
 # docker-compose commands
 #
 # requirements:
-#   - docker-compose
 #   - slc (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
