@@ -26,5 +26,4 @@ To quickly make them available, simply add the folder to the `PATH`.
 
 ## History
 
-I've been learning a couple of things since I released [scripts](https://github.com/jaimecgomezz/scripts), my first collection of executables. At that moment, I used to see them as a well thought-out project... and... no, not really! I decided to keep them because they reflect how I understood and design scripts.
-
+I've been learning a couple of things since I released [scripts](https://github.com/jaimecgomezz/scripts), my first, now archived, collection of executables. I decided to keep them because the reflect how I used to understand and design code. This project could be considered a `v2`. 
