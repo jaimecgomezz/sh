@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+##############################
+# @jaimecgomezz
+#
+# Select interactively based
+# on context
+#
+# Requires:
+#   - fzf
+#   - dmenu
+##############################
+
+FZF="${FZF:-fzf}"
+DMENU="${DMENU:-dmenu}"
+
+USAGE="Usage: slc PARENT [ARG...]
+
+Parent
+  systemd   Triggers dmenu selector
+  *         Triggers fzf selector"
+print_usage() { echo "$USAGE"; }
+
+case "$1" in
+systemd) $DMENU ;;
+*) $FZF ;;
+esac

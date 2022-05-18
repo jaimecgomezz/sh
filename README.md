@@ -14,6 +14,7 @@ collection of personal scripts
 - [nfy](nfy): Easily send predefined notifications
 - [rrr](rrr): Easily run any of this scripts.
   Along with `nfy`, it is intended to be triggered with key bindings!
+- [slc](slc): Select interactively based on context, either with [dmenu](https://tools.suckless.org/dmenu/) of [fzf](https://github.com/junegunn/fzf)
 
 ## Installation
 
