@@ -12,9 +12,9 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="USAGE: dkc ACTION [CONTAINER...]
+USAGE="USAGE: dkc [ACTION] [CONTAINER...]
 
-Actions:
+Action
   -                       Enter interactive mode
   l, list                 List containers
   u, up   [CONTAINER...]  Run all or specified container

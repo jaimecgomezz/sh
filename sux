@@ -9,8 +9,9 @@
 #   - pkexec
 #-----------------------------
 
-# grant agent is running
-/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 2>/dev/null &
+activate_agent() { /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 2>/dev/null & }
+
+activate_agent || activate_agent
 
 pkexec sh -c "$@"
 

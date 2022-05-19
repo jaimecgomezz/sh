@@ -14,7 +14,7 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="Usage: sxt [Action]
+USAGE="Usage: sxt [ACTION]
 
 Action
   -             Enter interactive mode
@@ -38,9 +38,9 @@ fi
 
 case "$1" in
 l | lock) lok ;;
-s | suspend) lok && systemctl suspend ;;
+e | exit) i3-msg exit ;;
 r | reboot) systemctl reboot ;;
 S | shutdown) systemctl poweroff ;;
-e | exit) i3-msg exit ;;
+s | suspend) lok && systemctl suspend ;;
 h | help | *) print_usage ;;
 esac

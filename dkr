@@ -12,14 +12,13 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="USAGE: drk ACTION
+USAGE="USAGE: drk [ACTION]
 
-Actions
+Action
   -         Enter interactive mode
   l, list   List all containers
   s, stop   Stop all containers
-  h, help   Print this guide
-"
+  h, help   Print this guide"
 print_usage() { echo "$USAGE"; }
 
 stop_containers() { docker ps | awk '{ print $1 }' | tail -n +2 | xargs docker stop 2>/dev/null; }

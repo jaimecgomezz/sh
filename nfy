@@ -13,7 +13,7 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="Usage: nfy [Notification]
+USAGE="Usage: nfy [NOTIFICATION]
 
 Notification
   -         Enter interactive mode

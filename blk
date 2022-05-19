@@ -25,11 +25,10 @@ BLKS="
 0.0.0.0 www.twitter.com
 0.0.0.0 twitter.com
 0.0.0.0 www.instagram.com
-0.0.0.0 instagram.com
-"
+0.0.0.0 instagram.com"
 #-----------------------------
 
-USAGE="Usage: blk [Action]
+USAGE="Usage: blk [ACTION]
 
 Action
   -               Enter interactive mode
@@ -42,7 +41,8 @@ deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
 activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
 
 if [ -z "$1" ]; then
-	if action="$(printf "%s\n%s" "activate" "deactivate" | slc)"; then
+	actions="$(printf "%s\n%s" "activate" "deactivate")"
+	if action="$(echo "$actions" | slc)"; then
 		blk "$action"
 		exit "$?"
 	else

@@ -14,22 +14,23 @@ export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 WALLPAPERS="${HOME}/pictures/walls"
 #-----------------------------
 
-USAGE="Usage: wal [Theme] [Wallpaper]
+USAGE="Usage: wal [THEME] [WALLPAPER]
 
 Theme
   -             Enter themes interactive mode
-  [Theme]       Any folder under the WALLPAPERS folder
+  [THEME]       Any folder under the WALLPAPERS folder
   h, help       Print this help
 
 Wallpaper
   -             Enter wallpapers interactive mode
-  [Wallpaper]   Any image under the WALLPAPERS/[Theme] folder"
+  [WALLPAPER]   Any image under the WALLPAPERS/[Theme] folder"
 print_usage() { echo "$USAGE"; }
 
 set_wal() { hsetroot -cover "$WALLPAPERS/$1/$2" >/dev/null; }
 
 if [ -z "$1" ]; then
-	if theme="$(find "$WALLPAPERS"/* -maxdepth 1 -type d -printf '%f\n' | slc)"; then
+	themes="$(find "$WALLPAPERS"/* -maxdepth 1 -type d -printf '%f\n')"
+	if theme="$(echo "$themes" | slc)"; then
 		wal "$theme"
 		exit "$?"
 	else
@@ -38,7 +39,8 @@ if [ -z "$1" ]; then
 else
 	theme="$1"
 	if [ -z "$2" ]; then
-		if wal="$(find "$WALLPAPERS/$theme"/* -maxdepth 1 -type f -printf '%f\n' | slc)"; then
+		walls="$(find "$WALLPAPERS/$theme"/* -maxdepth 1 -type f -printf '%f\n')"
+		if wal="$(echo "$walls" | slc)"; then
 			set_wal "$theme" "$wal"
 		else
 			exit 1

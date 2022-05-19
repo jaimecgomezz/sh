@@ -15,9 +15,10 @@ export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
 USAGE="Usage: xpl [PAGE]
-PAGE
-  h, help   Print this help
-  *         Any valid man page"
+
+Page
+  [Page]    Any valid man page
+  h, help   Print this help"
 print_usage() { echo "$USAGE"; }
 
 explain_page() { echo "$1" | sed 's/\ \+-.*//' | xargs man -Tpdf 2>/dev/null | zathura -; }

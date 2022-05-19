@@ -19,8 +19,7 @@ KB
   -         Enter interactive mode
   us        US altgr-intl, default
   mx        Spanish, latam
-  h, help   Print this guide
-"
+  h, help   Print this guide"
 print_usage() { echo "$USAGE"; }
 
 mx_kb() { setxkbmap latam -option 'ctrl:nocaps'; }
