@@ -30,15 +30,14 @@ handle_task() {
 		echo "$TASK" >>"$TASKS"
 		sed -i -e '/^$/d' -e '/^ *$/d' "$TASKS"
 	fi
-
-	tdo
 }
 
 if [ -z "$1" ]; then
 	task="$(slc --print-query <"$TASKS" | tr -d '\n')"
 	[ -n "$task" ] || exit 1
-	tdo "$task"
-	exit 0
+	handle_task "$task"
+	tdo
+	exit "$?"
 fi
 
 case "$1" in
