@@ -10,7 +10,7 @@
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
-SCRIPTS="$HOME/scripts"
+SCRIPTS="$HOME/sh"
 #-----------------------------
 
 USAGE="Usage: rrr [Script]
