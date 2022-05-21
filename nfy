@@ -8,7 +8,7 @@
 #
 # Requires:
 #   - slc (custom)
-#   - notify-send
+#   - notify-send.sh
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------

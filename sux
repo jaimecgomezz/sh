@@ -6,7 +6,7 @@
 # Run commands as sudo
 #
 # Requires:
-#   - pkexec
+#   - polkit
 #-----------------------------
 
 activate_agent() { /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 2>/dev/null & }

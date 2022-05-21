@@ -6,8 +6,9 @@ collection of personal scripts
 - [sxt](sxt): System exit manager.
 - [blk](blk): Easily block internet pages.
 - [rrr](rrr): Easily run any of this scripts.
-- [skb](skb): Easily set your keyboard layout
+- [skb](skb): Easily set your keyboard layout.
 - [nfy](nfy): Easily send predefined notifications.
+- [ppp](ppp): Easily install scripts' dependencies.
 - [wal](wal): Easily set your wallpaper. See [walls](https://github.com/jaimecgomezz/walls).
 - [lok](lok): Lock screen. Inspired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
 - [dkr](dkr): Easily run common Docker commands.
@@ -21,7 +22,7 @@ collection of personal scripts
 
 ### Requirements
 
-[X](https://github.com/freedesktop/xorg-xserver), [i3](https://github.com/i3/i3), [i3lock-color](https://github.com/Raymo111/i3lock-color), [notify-send](https://github.com/vlevit/notify-send.sh),  [dmenu](https://tools.suckless.org/dmenu/), [fzf](https://github.com/junegunn/fzf), [polkit](https://gitlab.freedesktop.org/polkit/polkit), [systemd](https://github.com/systemd/systemd), [hsetroot](https://github.com/himdel/hsetroot), [man](https://www.kernel.org/doc/man-pages/) and [zathura](https://git.pwmt.org/pwmt/zathura) with [PDF support](https://git.pwmt.org/pwmt/zathura-pdf-mupdf).
+[yay](https://github.com/Jguer/yay), [i3lock-color](https://github.com/Raymo111/i3lock-color), [notify-send.sh](https://github.com/vlevit/notify-send.sh), [xorg-setxkbmap](https://github.com/freedesktop/xorg-setxkbmap), [dmenu](https://tools.suckless.org/dmenu/), [fzf](https://github.com/junegunn/fzf), [polkit](https://gitlab.freedesktop.org/polkit/polkit), [hsetroot](https://github.com/himdel/hsetroot), [jq](https://github.com/stedolan/jq), and [zathura](https://git.pwmt.org/pwmt/zathura) with [PDF support](https://git.pwmt.org/pwmt/zathura-pdf-mupdf).
 
 To quickly make them available, simply add the folder to the `PATH`.
 

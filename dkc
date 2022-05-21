@@ -6,7 +6,8 @@
 # Easily run common
 # docker-compose commands
 #
-# requirements:
+# Requires:
+#   - jq
 #   - slc (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
