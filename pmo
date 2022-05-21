@@ -7,9 +7,6 @@
 # Requires:
 #   - slc (custom)
 #   - ntf (custom)
-#
-# TODO:
-#   - last
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
@@ -27,6 +24,7 @@ Action
   -                 Enter interactive mode
   s, start          Start pomodoro session
   n, next           Skip to next session/break
+  l, last           Return to last session/break
   p, pause          Pause pomodoro session
   r, restart        Restart current session/brek
   e, end            End pomodoro session
@@ -44,9 +42,11 @@ get_session() { sed -n 2p "$DB"; }
 set_session() { sed -i '2s/.*/'"$1"'/' "$DB"; }
 set_next_session() { set_session $(($(get_session) + 1)); }
 set_previous_session() { set_session $(($(get_session) - 1)); }
+get_max_session() { echo $((POMOS * 2)); }
 set_max_session() { set_session $((POMOS * 2)); }
-get_bg_pid() { sed -n 3p "$DB"; }
-set_bg_pid() { sed -i '3s/.*/'"$1"'/' "$DB"; }
+get_bg_pid() { tail -n +3 "$DB"; }
+set_bg_pid() { echo "$1" >>"$DB"; }
+clean_bg_pid() { sed -i '3,$d' "$DB"; }
 
 is_paused() { [ "$1" -eq 0 ] && true || false; }
 is_inactive() { [ "$1" -eq 0 ] && true || false; }
@@ -81,11 +81,10 @@ start_long_break() {
 }
 
 end_pomo() {
-	nfy_critical "Finished"
 	pause_pomo
+	nfy_critical "Finished"
 	set_cycle 0
 	set_session 0
-	set_bg_pid 0
 }
 
 start_pomo() {
@@ -97,8 +96,8 @@ start_pomo() {
 }
 
 pause_pomo() {
-	kill "$(get_bg_pid)" 2>/dev/null
-	set_bg_pid 0
+	(get_bg_pid | xargs kill) >/dev/null 2>&1
+	clean_bg_pid >/dev/null 2>&1
 }
 
 restart_pomo() {
@@ -117,6 +116,29 @@ restart_pomo() {
 		set_previous_session
 		pmo next
 	fi
+}
+
+last_pomo() {
+	pause_pomo
+
+	cycle="$(get_cycle)"
+	session="$(get_session)"
+
+	if [ "$session" -ge 2 ]; then
+		set_session "$((session - 2))"
+	else
+		if is_first_cycle "$cycle"; then
+			start_pomo
+		else
+			set_previous_cycle
+			case "$session" in
+			1) set_session "$(($(get_max_session) - 1))" ;;
+			*) set_max_session ;;
+			esac
+		fi
+	fi
+
+	pmo next
 }
 
 next_pomo() {
@@ -188,7 +210,7 @@ wait_pomo() {
 }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "restart" "end" "next" "info" "wait" "cancel")"
+	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "restart" "end" "next" "last" "info" "wait" "cancel")"
 	if action="$(echo "$actions" | slc)"; then
 		pmo "$action"
 		exit "$?"
@@ -200,6 +222,7 @@ fi
 case "$1" in
 s | start) start_pomo ;;
 n | next) next_pomo ;;
+l | last) last_pomo ;;
 p | pause) pause_pomo ;;
 r | restart) restart_pomo ;;
 e | end) end_pomo ;;
