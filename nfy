@@ -22,6 +22,7 @@ Notification
 print_usage() { echo "$USAGE"; }
 
 notify_date() { notify-send -t 10000 "date" "$(date)"; }
+custom_notification() { notify-send "$@"; }
 
 if [ -z "$1" ]; then
 	notifications="date"
@@ -35,5 +36,6 @@ fi
 
 case "$1" in
 d | date) notify_date ;;
-h | help | *) print_usage ;;
+h | help) print_usage ;;
+*) custom_notification "$@" ;;
 esac

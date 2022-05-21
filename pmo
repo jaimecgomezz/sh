@@ -6,6 +6,10 @@
 #
 # Requires:
 #   - slc (custom)
+#   - ntf (custom)
+#
+# TODO:
+#   - last
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
