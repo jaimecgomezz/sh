@@ -101,6 +101,8 @@ pause_pomo() {
 }
 
 restart_pomo() {
+	pause_pomo
+
 	cycle="$(get_cycle)"
 	session="$(get_session)"
 
@@ -142,6 +144,8 @@ last_pomo() {
 }
 
 next_pomo() {
+	pause_pomo
+
 	cycle="$(get_cycle)"
 	session="$(get_session)"
 
@@ -202,7 +206,6 @@ wait_pomo() {
 			sleepy "$1"
 			start_pomo
 		) &
-
 		set_bg_pid "$!"
 	else
 		print_usage
