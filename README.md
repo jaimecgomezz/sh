@@ -11,9 +11,9 @@ collection of personal scripts
 - [wal](wal): Easily set your wallpaper. See [walls](https://github.com/jaimecgomezz/walls).
 - [lok](lok): Lock screen. Inspired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
 - [dkr](dkr): Easily run common Docker commands.
-- [pmo](pmo): A pomodoro manager written in POSIX shell.
 - [slc](slc): Select interactively based on caller context.
 - [xpl](xpl): Easily access man pages in their PDF format.
+- [pmo](pmo): A pomodoro manager written in POSIX shell.
 - [dkc](dkc): Easily run common Docker Compose commands.
 - [fch](fch): A fetch written in POSIX shell without any external commands. [Source](https://github.com/6gk/fet.sh).
 
