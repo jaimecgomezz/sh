@@ -1,0 +1,164 @@
+#!/usr/bin/env sh
+
+#-----------------------------
+# @jaimecgomezz
+#
+#
+# Requires:
+#   - slc (custom)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#------------------------ vars
+DB="${HOME}/pomos"
+CYCLES=${CYCLES:-4} # Number of pomo cycles
+POMOS=${POMOS:-4}   # Number of focus lapses
+WORKL=${WORKL:-2}   # Length of focus lapse
+BREAKL=${BREAKL:-1} # Length of break lapse
+LONGBL=${LONGBL:-3} # Length of long break lapse
+#-----------------------------
+
+USAGE="Usage: pmo [ACTION]
+
+Action
+  -               Enter interactive mode
+  s, start        Start pomodoro session
+  n, next         Skip to next session/break
+  p, pause        Pause pomodoro session
+  e, end          End pomodoro session
+  i, info         Info about pomodoro session
+  h, help         Print this help"
+print_usage() { echo "$USAGE"; }
+
+get_cycle() { sed -n 1p "$DB"; }
+set_cycle() { sed -i '1s/.*/'"$1"'/' "$DB"; }
+set_next_cycle() { set_cycle $(($(get_cycle) + 1)); }
+get_session() { sed -n 2p "$DB"; }
+set_session() { sed -i '2s/.*/'"$1"'/' "$DB"; }
+set_next_session() { set_session $(($(get_session) + 1)); }
+get_bg_pid() { sed -n 3p "$DB"; }
+set_bg_pid() { sed -i '3s/.*/'"$1"'/' "$DB"; }
+
+is_inactive() { [ "$1" -eq 0 ] && true || false; }
+is_in_break() { [ $((${1} % 2)) -eq 0 ] && true || false; }
+is_in_long_break() { [ "$1" -eq $((POMOS * 2)) ] && true || false; }
+is_in_last_cycle() { [ "$1" -eq "$CYCLES" ] && true || false; }
+is_in_last_session() { [ "$1" -eq $((POMOS * 2 - 1)) ] && true || false; }
+
+nfy_ordinary() { nfy pmo "$1" -t 60000; }
+nfy_critical() { nfy pmo "$1" -u critical -t 30000; }
+
+sleepy() { sleep $((${1} * 60)); }
+
+start_work() {
+	nfy_critical "Start work: ${WORKL} mins."
+	sleepy "$WORKL"
+	pmo next
+}
+
+start_break() {
+	nfy_ordinary "Start break: ${BREAKL} mins."
+	sleepy "$BREAKL"
+	pmo next
+}
+
+start_long_break() {
+	nfy_ordinary "Start long break: ${LONGBL} mins."
+	sleepy "$LONGBL"
+	pmo next
+}
+
+end_pomo() {
+	if is_inactive "$(get_cycle)"; then
+		nfy_ordinary "No active session"
+	else
+		set_cycle 0
+		set_session 0
+		set_bg_pid 0
+		nfy_critical "Finished"
+	fi
+}
+
+start_pomo() {
+	set_cycle 1
+	set_session 1
+	start_work &
+	set_bg_pid "$!"
+}
+
+pause_pomo() {
+	kill "$(get_bg_pid)" 2>/dev/null
+}
+
+next_pomo() {
+	cycle="$(get_cycle)"
+	session="$(get_session)"
+
+	if is_inactive "$cycle"; then
+		start_pomo
+	else
+		if is_in_long_break "$session"; then
+			if is_in_last_cycle "$cycle"; then
+				end_pomo
+			else
+				set_next_cycle
+				set_session 1
+				start_work &
+				set_bg_pid "$!"
+			fi
+		else
+			if is_in_break "$session"; then
+				set_next_session
+				start_work &
+				set_bg_pid "$!"
+			else
+				if is_in_last_session "$session"; then
+					set_next_session
+					start_long_break &
+					set_bg_pid "$!"
+				else
+					set_next_session
+					start_break &
+					set_bg_pid "$!"
+				fi
+			fi
+		fi
+	fi
+}
+
+info_pomo() {
+	cycle="$(get_cycle)"
+	session="$(get_session)"
+
+	if is_inactive "$cycle"; then
+		nfy_ordinary "No active session"
+	else
+		if is_in_long_break "$session"; then
+			nfy_ordinary "Long break $cycle."
+		else
+			if is_in_break "$session"; then
+				nfy_ordinary "Session $cycle. Break $((session / 2))."
+			else
+				nfy_ordinary "Session $cycle. Pomo $(((session + 1) / 2))."
+			fi
+		fi
+	fi
+}
+
+if [ -z "$1" ]; then
+	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "end" "next" "last" "reset" "info")"
+	if action="$(echo "$actions" | slc)"; then
+		pmo "$action"
+		exit "$?"
+	else
+		exit 1
+	fi
+fi
+
+case "$1" in
+s | start) start_pomo ;;
+n | next) next_pomo ;;
+p | pause) pause_pomo ;;
+e | end) end_pomo ;;
+i | info) info_pomo ;;
+h | help | *) print_usage ;;
+esac
