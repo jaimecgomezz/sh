@@ -33,11 +33,11 @@ print_usage() { echo "$USAGE"; }
 get_cycle() { sed -n 1p "$DB"; }
 set_cycle() { sed -i '1s/.*/'"$1"'/' "$DB"; }
 set_next_cycle() { set_cycle $(($(get_cycle) + 1)); }
-set_last_cycle() { set_cycle $(($(get_cycle) - 1)); }
+set_previous_cycle() { set_cycle $(($(get_cycle) - 1)); }
 get_session() { sed -n 2p "$DB"; }
 set_session() { sed -i '2s/.*/'"$1"'/' "$DB"; }
 set_next_session() { set_session $(($(get_session) + 1)); }
-set_last_session() { set_session $(($(get_session) - 1)); }
+set_previous_session() { set_session $(($(get_session) - 1)); }
 set_max_session() { set_session $((POMOS * 2)); }
 get_bg_pid() { sed -n 3p "$DB"; }
 set_bg_pid() { sed -i '3s/.*/'"$1"'/' "$DB"; }
@@ -75,18 +75,15 @@ start_long_break() {
 }
 
 end_pomo() {
-	if is_inactive "$(get_cycle)"; then
-		nfy_ordinary "No active session"
-	else
-		pause_pomo
-		set_cycle 0
-		set_session 0
-		set_bg_pid 0
-		nfy_critical "Finished"
-	fi
+	nfy_critical "Finished"
+	pause_pomo
+	set_cycle 0
+	set_session 0
+	set_bg_pid 0
 }
 
 start_pomo() {
+	pause_pomo
 	set_cycle 1
 	set_session 1
 	start_work &
@@ -94,35 +91,25 @@ start_pomo() {
 }
 
 pause_pomo() {
-	if is_paused "$(get_bg_pid)"; then
-		nfy_ordinary "No active session"
-	else
-		kill "$(get_bg_pid)" 2>/dev/null
-		set_bg_pid 0
-	fi
+	kill "$(get_bg_pid)" 2>/dev/null
+	set_bg_pid 0
 }
 
 restart_pomo() {
 	cycle="$(get_cycle)"
 	session="$(get_session)"
 
-	if is_inactive "$cycle"; then
-		nfy_ordinary "No active session"
-	else
-		pause_pomo
-
-		if is_first_session "$session"; then
-			if is_first_cycle "$cycle"; then
-				start_pomo
-			else
-				set_last_cycle
-				set_max_session
-				pmo next
-			fi
+	if is_first_session "$session"; then
+		if is_first_cycle "$cycle"; then
+			start_pomo
 		else
-			set_last_session
+			set_previous_cycle
+			set_max_session
 			pmo next
 		fi
+	else
+		set_previous_session
+		pmo next
 	fi
 }
 
