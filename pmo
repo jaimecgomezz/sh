@@ -78,6 +78,7 @@ end_pomo() {
 	if is_inactive "$(get_cycle)"; then
 		nfy_ordinary "No active session"
 	else
+		pause_pomo
 		set_cycle 0
 		set_session 0
 		set_bg_pid 0
