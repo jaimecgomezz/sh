@@ -10,11 +10,11 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
 DB="${HOME}/pomos"
-CYCLES=${CYCLES:-4} # Number of pomo cycles
-POMOS=${POMOS:-4}   # Number of focus lapses
-WORKL=${WORKL:-2}   # Length of focus lapse
-BREAKL=${BREAKL:-1} # Length of break lapse
-LONGBL=${LONGBL:-3} # Length of long break lapse
+CYCLES=${CYCLES:-4}  # Number of pomo cycles
+POMOS=${POMOS:-4}    # Number of focus lapses
+WORKL=${WORKL:-25}   # Length of focus lapse
+BREAKL=${BREAKL:-5}  # Length of break lapse
+LONGBL=${LONGBL:-15} # Length of long break lapse
 #-----------------------------
 
 USAGE="Usage: pmo [ACTION]
@@ -86,7 +86,12 @@ start_pomo() {
 }
 
 pause_pomo() {
-	kill "$(get_bg_pid)" 2>/dev/null
+	if is_paused "$(get_bg_pid)"; then
+		nfy_ordinary "No active session"
+	else
+		kill "$(get_bg_pid)" 2>/dev/null
+		set_bg_pid 0
+	fi
 }
 
 next_pomo() {
@@ -145,7 +150,7 @@ info_pomo() {
 }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "end" "next" "last" "reset" "info")"
+	actions="$(printf "%s\n%s\n%s\n%s\n%s\n" "start" "pause" "end" "next" "info")"
 	if action="$(echo "$actions" | slc)"; then
 		pmo "$action"
 		exit "$?"
