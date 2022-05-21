@@ -20,14 +20,16 @@ LONGBL=${LONGBL:-15} # Length of long break lapse
 USAGE="Usage: pmo [ACTION]
 
 Action
-  -               Enter interactive mode
-  s, start        Start pomodoro session
-  n, next         Skip to next session/break
-  p, pause        Pause pomodoro session
-  r, restart      Restart current session/brek
-  e, end          End pomodoro session
-  i, info         Info about pomodoro session
-  h, help         Print this help"
+  -                 Enter interactive mode
+  s, start          Start pomodoro session
+  n, next           Skip to next session/break
+  p, pause          Pause pomodoro session
+  r, restart        Restart current session/brek
+  e, end            End pomodoro session
+  i, info           Info about pomodoro session
+  w, wait MINUTES   Program pomodoro to start in MINUTES
+  c, cancel         Cancel programmed pomodoro
+  h, help           Print this help"
 print_usage() { echo "$USAGE"; }
 
 get_cycle() { sed -n 1p "$DB"; }
@@ -168,8 +170,21 @@ info_pomo() {
 	fi
 }
 
+wait_pomo() {
+	if [ -n "$1" ]; then
+		(
+			sleepy "$1"
+			start_pomo
+		) &
+
+		set_bg_pid "$!"
+	else
+		print_usage
+	fi
+}
+
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "restart" "end" "next" "info")"
+	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "restart" "end" "next" "info" "wait" "cancel")"
 	if action="$(echo "$actions" | slc)"; then
 		pmo "$action"
 		exit "$?"
@@ -185,5 +200,7 @@ p | pause) pause_pomo ;;
 r | restart) restart_pomo ;;
 e | end) end_pomo ;;
 i | info) info_pomo ;;
+w | wait) wait_pomo "$2" ;;
+c | cancel) pause_pomo ;;
 h | help | *) print_usage ;;
 esac
