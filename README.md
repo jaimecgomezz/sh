@@ -24,11 +24,11 @@ collection of personal scripts
 
 [yay](https://github.com/Jguer/yay), [i3lock-color](https://github.com/Raymo111/i3lock-color), [notify-send.sh](https://github.com/vlevit/notify-send.sh), [xorg-setxkbmap](https://github.com/freedesktop/xorg-setxkbmap), [dmenu](https://tools.suckless.org/dmenu/), [fzf](https://github.com/junegunn/fzf), [polkit](https://gitlab.freedesktop.org/polkit/polkit), [hsetroot](https://github.com/himdel/hsetroot), [jq](https://github.com/stedolan/jq), and [zathura](https://git.pwmt.org/pwmt/zathura) with [PDF support](https://git.pwmt.org/pwmt/zathura-pdf-mupdf).
 
-To quickly make them available, simply add the folder to the `PATH`.
-
 ```sh
 ~ $ git clone https://github.com/jaimecgomezz/sh
-~ $ export PATH="$PATH:~/sh"
+~ $ export PATH="$PATH:~/sh" # Available in current terminal
+~ $ echo "PATH=\"$PATH:~/sh\"" >> .profile # Available permanentely
+~ $ ppp i # install dependencies
 ```
 
 ## FAQ

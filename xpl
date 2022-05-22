@@ -8,7 +8,6 @@
 #
 # Requires:
 #   - slc (custom)
-#   - man
 #   - zathura (pdf support)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
