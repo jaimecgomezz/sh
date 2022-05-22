@@ -25,7 +25,8 @@ Action
   s, start          Start pomodoro session
   n, next           Skip to next session/break
   l, last           Return to last session/break
-  p, pause          Pause pomodoro session
+  p, pause          Pause pomodoro session/break
+  u, unpause        Unpause pomodoro session/break
   r, restart        Restart current session/brek
   e, end            End pomodoro session
   i, info           Info about pomodoro session
@@ -213,7 +214,7 @@ wait_pomo() {
 }
 
 if [ -z "$1" ]; then
-	if action="$(nsl start pause restart end next last info wait cancel)"; then
+	if action="$(nsl start pause unpause restart end next last info wait cancel)"; then
 		pmo "$action"
 		exit "$?"
 	else
@@ -226,6 +227,7 @@ s | start) start_pomo ;;
 n | next) next_pomo ;;
 l | last) last_pomo ;;
 p | pause) pause_pomo ;;
+u | unpause) restart_pomo ;;
 r | restart) restart_pomo ;;
 e | end) end_pomo ;;
 i | info) info_pomo ;;
