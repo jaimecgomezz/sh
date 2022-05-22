@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+#-----------------------------
+# @jaimecgomezz
+#
+# Print arguments, each in new
+# lines and pass them to slc
+#
+# Requires
+#   - slc (custom)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
+
+printf '%s\n' "$@" | slc
