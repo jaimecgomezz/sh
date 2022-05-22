@@ -8,7 +8,7 @@
 #
 # Requires:
 #   - jq
-#   - slc (custom)
+#   - nsl (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
@@ -29,8 +29,7 @@ stop_containers() { docker-compose stop "$@"; }
 list_containers() { docker-compose ps --format json | jq -r '["Container","Status"], ["---------", "------"], (.[] | [.Name,.State]) | @tsv'; }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s\n%s" "list" "up" "stop")"
-	if action="$(echo "$actions" | slc)"; then
+	if action="$(nsl list up stop)"; then
 		dkc "$action"
 		exit "$?"
 	else

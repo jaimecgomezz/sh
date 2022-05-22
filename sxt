@@ -6,7 +6,7 @@
 # System exit manager
 #
 # Requires:
-#   - slc (custom)
+#   - nsl (custom)
 #   - lok (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
@@ -25,8 +25,7 @@ Action
 print_usage() { echo "$USAGE"; }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s\n%s\n%s\n%s" "lock" "suspend" "reboot" "shutdown" "exit")"
-	if action="$(echo "$actions" | slc)"; then
+	if action="$(nsl lock suspend reboot shutdown exit)"; then
 		sxt "$action"
 		exit "$?"
 	else

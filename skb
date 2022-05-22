@@ -8,7 +8,7 @@
 #
 # requirements:
 #   - xorg-setxkbmap
-#   - slc (custom)
+#   - nsl (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
@@ -26,8 +26,7 @@ mx_kb() { setxkbmap latam -option 'ctrl:nocaps'; }
 us_kb() { setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'; }
 
 if [ -z "$1" ]; then
-	keyboards="$(printf "%s\n%s" "us" "mx")"
-	if kb="$(echo "$keyboards" | slc)"; then
+	if kb="$(nsl us mx)"; then
 		skb "$kb"
 		exit "$?"
 	else

@@ -7,7 +7,7 @@
 # notifications
 #
 # Requires:
-#   - slc (custom)
+#   - nsl (custom)
 #   - notify-send.sh
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
@@ -25,8 +25,7 @@ notify_date() { notify-send -t 10000 "date" "$(date)"; }
 custom_notification() { notify-send "$@"; }
 
 if [ -z "$1" ]; then
-	notifications="date"
-	if notification="$(echo "$notifications" | slc)"; then
+	if notification="$(nsl date)"; then
 		nfy "$notification"
 		exit "$?"
 	else

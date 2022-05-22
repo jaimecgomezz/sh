@@ -5,7 +5,7 @@
 #
 #
 # Requires:
-#   - slc (custom)
+#   - nsl (custom)
 #   - ntf (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
@@ -213,8 +213,7 @@ wait_pomo() {
 }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s" "start" "pause" "restart" "end" "next" "last" "info" "wait" "cancel")"
-	if action="$(echo "$actions" | slc)"; then
+	if action="$(nsl start pause restart end next last info wait cancel)"; then
 		pmo "$action"
 		exit "$?"
 	else

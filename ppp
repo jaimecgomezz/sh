@@ -6,7 +6,7 @@
 #
 # Requires:
 #   - yay
-#   - slc (custom)
+#   - nsl (custom)
 #   - ntf (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
@@ -26,8 +26,7 @@ print_usage() { echo "$USAGE"; }
 defdeps() { DEPS="$DEPS $*"; }
 
 if [ -z "$1" ]; then
-	actions="$(echo install uninstall | tr ' ' '\n')"
-	if action="$(echo "$actions" | slc)"; then
+	if action="$(nsl install uninstall)"; then
 		ppp "$action"
 		exit "$?"
 	else
@@ -38,7 +37,7 @@ fi
 ACTION="$1"
 shift
 
-SCRIPTS="${*:-tdo sux sxt blk rrr skb nfy wal lok dkr slc xpl pmo dkc fch}"
+SCRIPTS="${*:-tdo sux sxt blk rrr skb nfy wal lok dkr slc nsl xpl pmo dkc fch}"
 for script in $SCRIPTS; do
 	case $script in
 	sux) defdeps polkit ;;

@@ -7,7 +7,7 @@
 # commands
 #
 # requirements:
-#   - slc (custom)
+#   - nsl (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
@@ -25,8 +25,7 @@ stop_containers() { docker ps | awk '{ print $1 }' | tail -n +2 | xargs docker s
 list_containers() { docker ps --format "table {{.Image}}\t{{.State}}"; }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s" "list" "stop")"
-	if action="$(echo "$actions" | slc)"; then
+	if action="$(nsl list stop)"; then
 		dkr "$action"
 		exit "$?"
 	else

@@ -7,7 +7,7 @@
 #
 # Requires:
 #   - sux (custom)
-#   - slc (custom)
+#   - nsl (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
@@ -41,8 +41,7 @@ deactivate_blk() { sux "echo \"$BASE\" >\"$HOSTS\""; }
 activate_blk() { sux "echo \"$BASE\" \"$BLKS\" >\"$HOSTS\""; }
 
 if [ -z "$1" ]; then
-	actions="$(printf "%s\n%s" "activate" "deactivate")"
-	if action="$(echo "$actions" | slc)"; then
+	if action="$(nsl activate deactivate)"; then
 		blk "$action"
 		exit "$?"
 	else
