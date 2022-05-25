@@ -61,7 +61,25 @@ is_first_cycle() { [ "$1" -eq 1 ] && true || false; }
 nfy_ordinary() { nfy pmo "$1" -t 60000; }
 nfy_critical() { nfy pmo "$1" -u critical -t 30000; }
 
-sleepy() { sleep $((${1} * 60)); }
+sleepy() { sleep "${1}m"; }
+
+remaining_sleep_time() {
+	if [ -n "$1" ]; then
+		ps -o etime= -o args= -p "$1" | perl -MPOSIX -lane '
+      %map = qw(d 86400 h 3600 m 60 s 1);
+      $F[0] =~ /(\d+-)?(\d+:)?(\d+):(\d+)/;
+      $t = -($4+60*($3+60*($2+24*$1)));
+      for (@F[2..$#F]) {
+        s/\?//g;
+        ($n, $p) = strtod($_);
+        $n *= $map{substr($_, -$p)} if $p;
+        $t += $n
+      }
+      print $t'
+	else
+		echo 0
+	fi
+}
 
 start_work() {
 	nfy_critical "Start work: ${WORKL} mins."
@@ -189,13 +207,15 @@ info_pomo() {
 	if is_inactive "$cycle"; then
 		nfy_ordinary "No active session"
 	else
+		elapsed="$(($(remaining_sleep_time "$(get_bg_pid)") / 60))"
+
 		if is_in_long_break "$session"; then
-			nfy_ordinary "Long break $cycle."
+			nfy_ordinary "Long break $cycle. $((LONGBL + elapsed))m remaining."
 		else
 			if is_in_break "$session"; then
-				nfy_ordinary "Session $cycle. Break $((session / 2))."
+				nfy_ordinary "Session $cycle. Break $((session / 2)). $((BREAKL + elapsed))m remaining."
 			else
-				nfy_ordinary "Session $cycle. Pomo $(((session + 1) / 2))."
+				nfy_ordinary "Session $cycle. Pomo $(((session + 1) / 2)). $((WORKL + elapsed))m remaining."
 			fi
 		fi
 	fi
