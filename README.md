@@ -13,10 +13,10 @@ collection of personal scripts
 - [lok](lok): Lock screen. Inspired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
 - [dkr](dkr): Easily run common Docker commands.
 - [adr](adr): Easily set predefined xrandr configs.
-- [pmo](pmo): A pomodoro manager written in POSIX shell.
 - [dkc](dkc): Easily run common Docker Compose commands.
 - [xpl](xpl): Easily access man pages in their PDF format.
 - [slc](slc): Select interactively based on caller context.
+- [pmo](pmo): Simple pomodoro manager written in POSIX shell.
 - [nsl](nsl): Echo arguments, each in new lines and [slc](slc) them.
 - [fch](fch): A fetch written in POSIX shell without any external commands. [Source](https://github.com/6gk/fet.sh).
 
