@@ -20,6 +20,10 @@ collection of personal scripts
 - [nsl](nsl): Echo arguments, each in new lines and [slc](slc) them.
 - [fch](fch): A fetch written in POSIX shell without any external commands. [Source](https://github.com/6gk/fet.sh).
 
+### Extras
+
+- [go2pdf](go2pdf): Download every Go's dev blog entry and join them as PDF
+
 ## Installation
 
 ### Requirements
