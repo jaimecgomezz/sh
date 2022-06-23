@@ -12,7 +12,6 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
 DB="${HOME}/pomos"
-CYCLES=${CYCLES:-4}  # Number of pomo cycles
 POMOS=${POMOS:-4}    # Number of focus lapses
 WORKL=${WORKL:-25}   # Length of focus lapse
 BREAKL=${BREAKL:-5}  # Length of break lapse
@@ -36,28 +35,19 @@ Action
   h, help           Print this help"
 print_usage() { echo "$USAGE"; }
 
-get_cycle() { sed -n 1p "$DB"; }
-set_cycle() { sed -i '1s/.*/'"$1"'/' "$DB"; }
-set_next_cycle() { set_cycle $(($(get_cycle) + 1)); }
-set_previous_cycle() { set_cycle $(($(get_cycle) - 1)); }
-get_session() { sed -n 2p "$DB"; }
-set_session() { sed -i '2s/.*/'"$1"'/' "$DB"; }
-set_next_session() { set_session $(($(get_session) + 1)); }
-set_previous_session() { set_session $(($(get_session) - 1)); }
-get_max_session() { echo $((POMOS * 2)); }
-set_max_session() { set_session $((POMOS * 2)); }
-get_bg_pid() { tail -n +3 "$DB"; }
+get_session() { sed -n 1p "$DB"; }
+set_session() { sed -i '1s/.*/'"$1"'/' "$DB"; }
+forward_sessions() { set_session $(($(get_session) + $1)); }
+rollback_sessions() { set_session $(($(get_session) - $1)); }
+get_bg_pids() { tail -n +2 "$DB"; }
 set_bg_pid() { echo "$1" >>"$DB"; }
-clean_bg_pid() { sed -i '3,$d' "$DB"; }
+clean_bg_pid() { sed -i '2,$d' "$DB"; }
 
-is_paused() { [ "$1" -eq 0 ] && true || false; }
-is_inactive() { [ "$1" -eq 0 ] && true || false; }
-is_in_break() { [ $((${1} % 2)) -eq 0 ] && true || false; }
-is_in_long_break() { [ "$1" -eq $((POMOS * 2)) ] && true || false; }
-is_in_last_cycle() { [ "$1" -eq "$CYCLES" ] && true || false; }
-is_in_last_session() { [ "$1" -eq $((POMOS * 2 - 1)) ] && true || false; }
-is_first_session() { [ "$1" -eq 1 ] && true || false; }
-is_first_cycle() { [ "$1" -eq 1 ] && true || false; }
+is_inactive() { [ "$(get_session)" -eq 0 ] || return 1; }
+is_first_session() { [ "$(get_session)" -eq 1 ] || return 1; }
+is_in_break() { [ $(($(get_session) % 2)) -eq 0 ] || return 1; }
+is_in_long_break() { [ "$(get_session)" -eq $((POMOS * 2)) ] || return 1; }
+is_in_last_session() { [ "$(get_session)" -eq $((POMOS * 2 - 1)) ] || return 1; }
 
 nfy_ordinary() { nfy pmo "$1" -t 60000; }
 nfy_critical() { nfy pmo "$1" -u critical -t 30000; }
@@ -100,64 +90,48 @@ start_long_break() {
 	pmo next
 }
 
-end_pomo() {
-	pause_pomo
-	nfy_critical "Finished"
-	set_cycle 0
-	set_session 0
-}
-
-start_pomo() {
-	pause_pomo
-	set_cycle 1
-	set_session 1
-	start_work &
-	set_bg_pid "$!"
-}
-
 pause_pomo() {
 	(get_bg_pid | xargs kill) >/dev/null 2>&1
 	clean_bg_pid >/dev/null 2>&1
 }
 
+end_pomo() {
+	pause_pomo
+	nfy_critical "Finished"
+	set_session 0
+}
+
+start_pomo() {
+	pause_pomo
+	set_session 1
+	start_work &
+	set_bg_pid "$!"
+}
+
 restart_pomo() {
 	pause_pomo
 
-	cycle="$(get_cycle)"
-	session="$(get_session)"
-
-	if is_first_session "$session"; then
-		if is_first_cycle "$cycle"; then
-			start_pomo
-		else
-			set_previous_cycle
-			set_max_session
-			pmo next
-		fi
+	if is_first_session; then
+		start_pomo
 	else
-		set_previous_session
+		rollback_sessions 1
 		pmo next
 	fi
+}
+
+cancel_pomo() {
+	pause_pomo
+
+	set_session 0
 }
 
 last_pomo() {
 	pause_pomo
 
-	cycle="$(get_cycle)"
-	session="$(get_session)"
-
-	if [ "$session" -ge 2 ]; then
-		set_session "$((session - 2))"
+	if is_first_session; then
+		start_pomo
 	else
-		if is_first_cycle "$cycle"; then
-			start_pomo
-		else
-			set_previous_cycle
-			case "$session" in
-			1) set_session "$(($(get_max_session) - 1))" ;;
-			*) set_max_session ;;
-			esac
-		fi
+		rollback_sessions 2
 	fi
 
 	pmo next
@@ -166,57 +140,42 @@ last_pomo() {
 next_pomo() {
 	pause_pomo
 
-	cycle="$(get_cycle)"
-	session="$(get_session)"
-
-	if is_inactive "$cycle"; then
+	if is_inactive; then
 		start_pomo
 	else
-		if is_in_long_break "$session"; then
-			if is_in_last_cycle "$cycle"; then
-				end_pomo
-			else
-				set_next_cycle
-				set_session 1
-				start_work &
-				set_bg_pid "$!"
-			fi
+		if is_in_long_break; then
+			end_pomo
 		else
-			if is_in_break "$session"; then
-				set_next_session
+			if is_in_break; then
 				start_work &
-				set_bg_pid "$!"
 			else
-				if is_in_last_session "$session"; then
-					set_next_session
+				if is_in_last_session; then
 					start_long_break &
-					set_bg_pid "$!"
 				else
-					set_next_session
 					start_break &
-					set_bg_pid "$!"
 				fi
 			fi
+
+			set_bg_pid "$!"
+			forward_sessions 1
 		fi
 	fi
 }
 
 info_pomo() {
-	cycle="$(get_cycle)"
-	session="$(get_session)"
-
-	if is_inactive "$cycle"; then
+	if is_inactive; then
 		nfy_ordinary "No active session"
 	else
-		elapsed="$(($(remaining_sleep_time "$(get_bg_pid)") / 60))"
+		session="$(get_session)"
+		elapsed="$(($(remaining_sleep_time "$(get_bg_pids)") / 60))"
 
-		if is_in_long_break "$session"; then
-			nfy_ordinary "Long break $cycle. $((LONGBL + elapsed))m remaining."
+		if is_in_long_break; then
+			nfy_ordinary "Long break. $((LONGBL + elapsed))m remaining."
 		else
-			if is_in_break "$session"; then
-				nfy_ordinary "Session $cycle. Break $((session / 2)). $((BREAKL + elapsed))m remaining."
+			if is_in_break; then
+				nfy_ordinary "Break $((session / 2)). $((BREAKL + elapsed))m remaining."
 			else
-				nfy_ordinary "Session $cycle. Pomo $(((session + 1) / 2)). $((WORKL + elapsed))m remaining."
+				nfy_ordinary "Pomo $(((session + 1) / 2)). $((WORKL + elapsed))m remaining."
 			fi
 		fi
 	fi
@@ -228,7 +187,6 @@ wait_pomo() {
 			sleepy "$1"
 			start_pomo
 		) &
-		set_bg_pid "$!"
 	else
 		print_usage
 	fi
@@ -253,6 +211,6 @@ r | restart) restart_pomo ;;
 e | end) end_pomo ;;
 i | info) info_pomo ;;
 w | wait) wait_pomo "$2" ;;
-c | cancel) pause_pomo ;;
+c | cancel) cancel_pomo ;;
 h | help | *) print_usage ;;
 esac
