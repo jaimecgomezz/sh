@@ -1,0 +1,65 @@
+#!/usr/bin/env sh
+
+#-----------------------------
+# @jaimecgomezz
+#
+# Interacts with console and
+# logs from Heroku cli
+#
+# Requires:
+#   - heroku
+#   - slc
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
+
+USAGE="USAGE: hkc [ACTION]
+
+OUTPUT
+  l, logs     Heroku logs
+  c, console  Heroku console
+  h, help     Print this guide"
+print_usage() { echo "$USAGE"; }
+
+select_app() {
+	heroku apps | tail -n +2 | head -n -1 >.herokuappstemp
+
+	if selected="$(slc <.herokuappstemp)"; then
+		rm .herokuappstemp
+		echo "$selected"
+	else
+		rm .herokuappstemp
+		exit 1
+	fi
+}
+
+select_dyno() {
+	heroku ps --app="$1" | grep '===' | grep -v run | sed 's/=== \([a-z]\+\).*/\1/' >.herokudynostemp
+
+	if selected="$(slc <.herokudynostemp)"; then
+		rm .herokudynostemp
+		echo "$selected"
+	else
+		rm .herokudynostemp
+		exit 1
+	fi
+}
+
+hkc_logs() {
+	app="$(select_app)"
+	dyno="$(select_dyno "$app")"
+
+	heroku logs -t --app="${app}" --dyno="${dyno}"
+}
+
+hkc_console() {
+	app="$(select_app)"
+
+	heroku run console --app="${app}"
+}
+
+case "$1" in
+l | logs) hkc_logs ;;
+c | console) hkc_console ;;
+*) print_usage ;;
+esac
