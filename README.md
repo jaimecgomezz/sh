@@ -1,9 +1,11 @@
 # sh
+
 collection of personal scripts
 
 - [tdo](tdo): Simple to-do list.
 - [sux](sux): Run scripts as sudo.
 - [sxt](sxt): System exit manager.
+- [edt](edt): Easily edit any config file.
 - [blk](blk): Easily block internet pages.
 - [rrr](rrr): Easily run any of this scripts.
 - [skb](skb): Easily set your keyboard layout.
@@ -51,11 +53,7 @@ collection of personal scripts
 
    I really wanted to use this scripts smoothly whether I run them through my WM as a key binding, or directly in the console; `slc` encapsulates this concern by deciding which selector to use based on the process' parent name.
 
-   
-
    For example, when launching `xpl` as a WM key binding, its parent process name would be `systemd`, contrary to `bash`, `shell` or `zsh` that we would get when running it directly in the console. If we detect `systemd` the we use `dmenu` as the selector, and `fzf` in any other case.
-
-   
 
    This simple concept allows us to change our selector for all of our scripts only by editing `slc`.
 
@@ -68,8 +66,6 @@ collection of personal scripts
    export PATH="$PATH:~/sh"
    ```
 
-   
-
 ## History
 
-I've been learning a couple of things since I released [scripts](https://github.com/jaimecgomezz/scripts), my first, now archived, collection of executables. I decided to keep them because the reflect how I used to understand and design code. This project could be considered a `v2`. 
+I've been learning a couple of things since I released [scripts](https://github.com/jaimecgomezz/scripts), my first, now archived, collection of executables. I decided to keep them because the reflect how I used to understand and design code. This project could be considered a `v2`.
