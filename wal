@@ -11,7 +11,9 @@
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
+THEME="${1:-dark}"
 WALLPAPERS="${HOME}/pictures/walls"
+SYMBOLIC="${HOME}/pictures/wallpaper"
 #-----------------------------
 
 USAGE="Usage: wal [THEME] [WALLPAPER]
@@ -26,24 +28,15 @@ Wallpaper
   [WALLPAPER]   Any image under the WALLPAPERS/[Theme] folder"
 print_usage() { echo "$USAGE"; }
 
-set_wal() { hsetroot -cover "$WALLPAPERS/$1/$2" >/dev/null; }
+set_wal() {
+	rm "$SYMBOLIC"
+	ln -s "$WALLPAPERS/$THEME/$1" "$SYMBOLIC"
+	hsetroot -cover "$SYMBOLIC" >/dev/null
+}
 
-if [ -z "$1" ]; then
-	if theme="$(find "$WALLPAPERS"/* -maxdepth 1 -type d -printf '%f\n' | slc)"; then
-		wal "$theme"
-		exit "$?"
-	else
-		exit 1
-	fi
+if wallpaper="$(find "$WALLPAPERS/$THEME"/* -maxdepth 1 -type f -printf '%f\n' | slc -select "$2")"; then
+	set_wal "$wallpaper"
+	wal "$THEME" "$wallpaper"
 else
-	theme="$1"
-	if [ -z "$2" ]; then
-		if wal="$(find "$WALLPAPERS/$theme"/* -maxdepth 1 -type f -printf '%f\n' | slc)"; then
-			set_wal "$theme" "$wal"
-		else
-			exit 1
-		fi
-	else
-		set_wal "$theme" "$2"
-	fi
+	exit 1
 fi
