@@ -11,6 +11,9 @@
 #   - slc
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+# ----------------------- vars
+APPS_FILE="${HOME}/.herokuappstemp"
+DYNOS_FILE="${HOME}/.herokudynostemp"
 #-----------------------------
 
 USAGE="USAGE: hkc [ACTION]
@@ -22,22 +25,21 @@ OUTPUT
 print_usage() { echo "$USAGE"; }
 
 select_app() {
-	heroku apps | tail -n +2 | head -n -1 >.herokuappstemp
+	if [ ! -f "$APPS_FILE" ]; then
+		heroku apps | tail -n +2 | head -n -1 >"$APPS_FILE"
+	fi
 
-	if selected="$(slc <.herokuappstemp)"; then
-		rm .herokuappstemp
+	if selected="$(slc <"$APPS_FILE")"; then
 		echo "$selected"
 	else
-		rm .herokuappstemp
 		exit 1
 	fi
 }
 
 select_dyno() {
-	heroku ps --app="$1" | grep '===' | grep -v run | sed 's/=== \([a-z]\+\).*/\1/' >.herokudynostemp
+	heroku ps --app="$1" | grep '===' | grep -v run | sed 's/=== \([a-z]\+\).*/\1/' >"$DYNOS_FILE"
 
-	if selected="$(slc <.herokudynostemp)"; then
-		rm .herokudynostemp
+	if selected="$(slc <"$DYNOS_FILE")"; then
 		echo "$selected"
 	else
 		rm .herokudynostemp
@@ -53,9 +55,9 @@ hkc_logs() {
 }
 
 hkc_console() {
-	app="$(select_app)"
-
-	heroku run console --app="${app}"
+	if app="$(select_app)"; then
+		heroku run console --app="${app}"
+	fi
 }
 
 case "$1" in
