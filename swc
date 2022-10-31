@@ -1,0 +1,86 @@
+#!/usr/bin/env sh
+
+#-----------------------------
+# @jaimecgomezz
+#
+# Easily colorschemes across
+# the OS
+#
+# Requires:
+#   - slc (custom script)
+#   - nfy (custom script)
+#   - xclip
+#   - spicetify
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
+
+USAGE="USAGE: swc [COLORSCHEME]
+
+COLORSCHEME
+  nord,horizon,paradise"
+print_usage() { echo "$USAGE"; }
+
+options="nord
+paradise"
+
+set_xresource() { sed -i "s/.*theme.*/#include \".Xresources.d\/${1}\" \/\* theme \*\//g" "$HOME/.Xresources"; }
+set_fzf() { sed -i "s/^source.*fzf.*/source \"\$HOME\/.config\/fzf\/${1}.config\"/g" "$HOME/.bashrc"; }
+set_rofi() { sed -i "s/@theme.*/@theme \"${1}.rasi\"/g" "$HOME/.config/rofi/config.rasi"; }
+set_kitty() { sed -i "s/^include.*/include ${1}.conf/g" "$HOME/.config/kitty/kitty.conf"; }
+set_zathura() { sed -i "s/^include.*/include ${1}/g" "$HOME/.config/zathura/zathurarc"; }
+set_bat() { sed -i "s/^--theme.*/--theme=\"${1}\"/g" "$HOME/.config/bat/config"; }
+set_lok() { sed -i "s/\(.*\)--color=.*/\1--color=\"${1}\" \\\/g" "$HOME/sh/lok"; }
+set_nvim() {
+	sed -i "s/^.*theme =.*/local theme = \"${1}\"/g" "$HOME/.config/nvim/lua/colors.lua"
+	sed -i "s/\(.*\)theme =.*/\1theme = \"${2}\" --/g" "$HOME/.config/nvim/lua/plugins/lualine.lua"
+}
+set_spotify() {
+	spicetify config current_theme "$1"
+	spicetify config color_scheme "$2"
+	spicetify apply
+}
+set_slack() { echo "$1" | xclip -selection c; }
+set_insomnia() { nfy -u "critical" "Insomnia theme: ${1}"; }
+
+set_nord() {
+	set_nvim "base16-nord" "nord"
+	set_rofi "nord"
+	set_kitty "nord"
+	set_zathura "nord"
+	set_spotify "Sleek" "Cherry"
+	set_fzf "nord"
+	set_bat "Nord"
+	set_lok "2E3440"
+	set_slack "#2E3440,#3B4252,#88C0D0,#2E3440,#3B4252,#D8DEE9,#A3BE8C,#81A1C1"
+	set_insomnia "insomnia-plugin-theme-nord"
+	wal "nord"
+}
+
+set_paradise() {
+	set_nvim "paradise" "auto"
+	set_rofi "paradise"
+	set_kitty "paradise"
+	set_zathura "paradise"
+	set_spotify "Ziro" "gray-dark"
+	set_fzf "paradise"
+	set_bat "base16"
+	set_lok "151515"
+	set_slack "#333333,#2D2D2D,#2D2D2D,#F9F9F9,#2D2D2D,#DEDEDE,#D64937,#D64937,#2D2D2D,#DEDEDE"
+	set_insomnia "One Dark"
+	wal "dark"
+}
+
+theme="$1"
+
+if [ -z "$theme" ]; then
+	if ! theme="$(echo "$options" | slc)"; then
+		exit 1
+	fi
+fi
+
+case "$theme" in
+nord) set_nord ;;
+paradise) set_paradise ;;
+*) print_usage ;;
+esac

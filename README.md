@@ -9,6 +9,7 @@ collection of personal scripts
 - [blk](blk): Easily block internet pages.
 - [rrr](rrr): Easily run any of this scripts.
 - [skb](skb): Easily set your keyboard layout.
+- [swc](swc): Easily colorschemes across the OS.
 - [nfy](nfy): Easily send predefined notifications.
 - [ppp](ppp): Easily install scripts' dependencies.
 - [wal](wal): Easily set your wallpaper. See [walls](https://github.com/jaimecgomezz/walls).
