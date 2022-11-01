@@ -20,6 +20,10 @@ TASK
   h, help   Print this help"
 print_usage() { echo "$USAGE"; }
 
+if [ ! -f "$TASKS" ]; then
+	touch "$TASKS"
+fi
+
 handle_task() {
 	TASK="$*"
 	if grep "^${TASK}$" <"$TASKS"; then
