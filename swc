@@ -83,7 +83,7 @@ set_horizon() {
 	set_spotify "Sleek" "Psycho"
 	set_fzf "horizon"
 	set_bat "base16"
-	set_lok "FAB28E"
+	set_lok "1C1E26"
 	set_slack "#101010,#101010,#D3D3CA,#BB313E,#424242,#F0F0E6,#BB313E,#BB313E,#101010,#F0F0E6"
 	set_insomnia "One Dark"
 	wal "dark"
