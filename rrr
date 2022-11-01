@@ -20,13 +20,33 @@ Script
   h, help   Print this help"
 print_usage() { echo "$USAGE"; }
 
-if [ -z "$1" ]; then
-	if script="$(find "$SCRIPTS"/* -type f -executable -printf '%f\n' | grep -E '^[a-z]{3}$' | slc)"; then
-		"$script"
-		exit "$?"
-	else
-		exit 1
-	fi
+options="arandr
+block pages
+docker
+edit configs
+keyboard layout
+swicth theme
+system exit
+todo
+wallpapers
+pick color
+explain man"
+
+if selection="$(echo "$options" | slc)"; then
+	case "$selection" in
+	"arandr") adr ;;
+	"block pages") blk ;;
+	"docker") dkr ;;
+	"edit configs") edt ;;
+	"keyboard layout") skb ;;
+	"swicth theme") swc ;;
+	"system exit") sxt ;;
+	"todo") tdo ;;
+	"wallpapers") wal ;;
+	"pick color") xcl ;;
+	"explain man") xpl ;;
+	*) exit 1 ;;
+	esac
 else
-	print_usage
+	exit 1
 fi
