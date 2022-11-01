@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+#-----------------------------
+# @jaimecgomezz
+#
+# Pick screen colors
+#
+# Requires:
+#   - xclip
+#   - xcolor
+#   - nfy (custom script)
+#------------------- protected
+export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
+#-----------------------------
+
+if color="$(xcolor)"; then
+	echo "$color" | xclip -selection c
+	nfy -t 60000 "$color"
+else
+	exit 1
+fi

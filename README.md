@@ -3,6 +3,7 @@
 collection of personal scripts
 
 - [tdo](tdo): Simple to-do list.
+- [xcl](xcl): Pick screen colors.
 - [sux](sux): Run scripts as sudo.
 - [sxt](sxt): System exit manager.
 - [edt](edt): Easily edit any config file.
