@@ -22,6 +22,7 @@ COLORSCHEME
 print_usage() { echo "$USAGE"; }
 
 options="nord
+horizon
 paradise"
 
 set_xresource() { sed -i "s/.*theme.*/#include \".Xresources.d\/${1}\" \/\* theme \*\//g" "$HOME/.Xresources"; }
@@ -44,6 +45,7 @@ set_slack() { echo "$1" | xclip -selection c; }
 set_insomnia() { nfy -u "critical" "Insomnia theme: ${1}"; }
 
 set_nord() {
+	set_xresource "nord"
 	set_nvim "base16-nord" "nord"
 	set_rofi "nord"
 	set_kitty "nord"
@@ -58,6 +60,7 @@ set_nord() {
 }
 
 set_paradise() {
+	set_xresource "paradise"
 	set_nvim "paradise" "auto"
 	set_rofi "paradise"
 	set_kitty "paradise"
@@ -66,7 +69,22 @@ set_paradise() {
 	set_fzf "paradise"
 	set_bat "base16"
 	set_lok "151515"
-	set_slack "#333333,#2D2D2D,#2D2D2D,#F9F9F9,#2D2D2D,#DEDEDE,#D64937,#D64937,#2D2D2D,#DEDEDE"
+	set_slack "#1D2229,#0B161E,#537AA6,#FFFFFF,#313843,#FFFFFF,#94E864,#78AF8F,#0B161E,#FFFFFF"
+	set_insomnia "One Dark"
+	wal "dark"
+}
+
+set_horizon() {
+	set_xresource "horizon"
+	set_nvim "base16-horizon-dark" "auto"
+	set_rofi "horizon"
+	set_kitty "horizon"
+	set_zathura "horizon"
+	set_spotify "Sleek" "Psycho"
+	set_fzf "horizon"
+	set_bat "base16"
+	set_lok "FAB28E"
+	set_slack "#101010,#101010,#D3D3CA,#BB313E,#424242,#F0F0E6,#BB313E,#BB313E,#101010,#F0F0E6"
 	set_insomnia "One Dark"
 	wal "dark"
 }
@@ -82,5 +100,6 @@ fi
 case "$theme" in
 nord) set_nord ;;
 paradise) set_paradise ;;
+horizon) set_horizon ;;
 *) print_usage ;;
 esac
