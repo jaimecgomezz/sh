@@ -80,11 +80,11 @@ set_horizon() {
 	set_rofi "horizon"
 	set_kitty "horizon"
 	set_zathura "horizon"
-	set_spotify "Sleek" "Psycho"
+	set_spotify "Sleek" "Horizon"
 	set_fzf "horizon"
 	set_bat "base16"
 	set_lok "1C1E26"
-	set_slack "#101010,#101010,#D3D3CA,#BB313E,#424242,#F0F0E6,#BB313E,#BB313E,#101010,#F0F0E6"
+	set_slack "#232530,#101010,#FAB28E,#1C1E26,#E95379,#FDF0ED,#F43E5C,#E9436F,#F43E5C,#16161C"
 	set_insomnia "One Dark"
 	wal "dark"
 }
