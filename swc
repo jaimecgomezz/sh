@@ -43,10 +43,18 @@ set_spotify() {
 }
 set_slack() { echo "$1" | xclip -selection c; }
 set_insomnia() { nfy -u "critical" "Insomnia theme: ${1}"; }
+set_i3() {
+	sed -i \
+		-e "s/\(.*\)\(client.focused.*\)/# \2/" \
+		-e "s/\(.*\)\(client.focused.*\)# ""$1""/\2 # ""$1""/" \
+		"$HOME/.config/i3/config"
+}
+set_bash() { sed -i "s/\(export THEME\=\).*/\1""$1""/" "$HOME/.bashrc"; }
 
 set_nord() {
+	set_bash "nord"
 	set_xresource "nord"
-	set_nvim "base16-nord" "nord"
+	set_nvim "nord" "nord"
 	set_rofi "nord"
 	set_kitty "nord"
 	set_zathura "nord"
@@ -56,10 +64,12 @@ set_nord() {
 	set_lok "2E3440"
 	set_slack "#2E3440,#3B4252,#88C0D0,#2E3440,#3B4252,#D8DEE9,#A3BE8C,#81A1C1"
 	set_insomnia "insomnia-plugin-theme-nord"
-	wal "nord"
+	set_i3 "nord"
+	wal "$HOME/pictures/walls/nord/light-drowing.jpg"
 }
 
 set_paradise() {
+	set_bash "paradise"
 	set_xresource "paradise"
 	set_nvim "paradise" "auto"
 	set_rofi "paradise"
@@ -71,12 +81,14 @@ set_paradise() {
 	set_lok "151515"
 	set_slack "#1D2229,#0B161E,#537AA6,#FFFFFF,#313843,#FFFFFF,#94E864,#78AF8F,#0B161E,#FFFFFF"
 	set_insomnia "One Dark"
-	wal "dark"
+	set_i3 "paradise"
+	wal "$HOME/pictures/walls/dark/b-565.png"
 }
 
 set_horizon() {
+	set_bash "horizon"
 	set_xresource "horizon"
-	set_nvim "base16-horizon-dark" "auto"
+	set_nvim "horizon" "auto"
 	set_rofi "horizon"
 	set_kitty "horizon"
 	set_zathura "horizon"
@@ -86,7 +98,7 @@ set_horizon() {
 	set_lok "1C1E26"
 	set_slack "#232530,#101010,#FAB28E,#1C1E26,#E95379,#FDF0ED,#F43E5C,#E9436F,#F43E5C,#16161C"
 	set_insomnia "One Dark"
-	wal "dark"
+	wal "$HOME/pictures/walls/blood/b-380.png"
 }
 
 theme="$1"
