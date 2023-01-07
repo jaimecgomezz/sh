@@ -11,7 +11,7 @@
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
-THEME="${1:-dark}"
+THEME="${1:-$THEME}"
 WALLPAPERS="${HOME}/pictures/walls"
 SYMBOLIC="${HOME}/pictures/wallpaper"
 #-----------------------------
@@ -30,12 +30,25 @@ print_usage() { echo "$USAGE"; }
 
 set_wal() {
 	rm "$SYMBOLIC"
-	ln -s "$WALLPAPERS/$THEME/$1" "$SYMBOLIC"
+	ln -s "$1" "$SYMBOLIC"
 	hsetroot -cover "$SYMBOLIC" >/dev/null
 }
 
-if wallpaper="$(find "$WALLPAPERS/$THEME"/* -maxdepth 1 -type f -printf '%f\n' | slc -select "$2")"; then
-	set_wal "$wallpaper"
+# Translate theme to wallpaper folder when they dont match
+case "$THEME" in
+horizon) THEME=blood ;;
+paradise) THEME=dark ;;
+esac
+
+# If first argyment is a valid file, set it as wallpaper
+if [ -r "$THEME" ]; then
+	set_wal "$THEME"
+	exit $?
+# Look for wallpapers within the selected theme and, if second argument is
+# provided is assumed to be a previously selected wallpaper so we can continue
+# exploring wallpapers from that point on
+elif wallpaper="$(find "$WALLPAPERS/$THEME"/* -maxdepth 1 -type f -printf '%f\n' | slc -select "$2")"; then
+	set_wal "$WALLPAPERS/$THEME/$wallpaper"
 	wal "$THEME" "$wallpaper"
 else
 	exit 1
