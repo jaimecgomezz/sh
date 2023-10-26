@@ -3,30 +3,31 @@
 #-----------------------------
 # @jaimecgomezz
 #
-# Easily run common docker
-# commands
+# Easily set custom keyboard
+# variants
 #
 # requirements:
+#   - xorg-setxkbmap
 #   - nsl (custom)
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="USAGE: drk [ACTION]
+USAGE="USAGE: keyboard-setter.sh [KB]
 
-Action
+KB
   -         Enter interactive mode
-  l, list   List all containers
-  s, stop   Stop all containers
+  us        US altgr-intl, default
+  mx        Spanish, latam
   h, help   Print this guide"
 print_usage() { echo "$USAGE"; }
 
-stop_containers() { docker ps | awk '{ print $1 }' | tail -n +2 | xargs docker stop 2>/dev/null; }
-list_containers() { docker ps --format "table {{.Image}}\t{{.State}}"; }
+mx_kb() { setxkbmap latam -option 'ctrl:nocaps'; }
+us_kb() { setxkbmap us -variant altgr-intl -option 'ctrl:nocaps'; }
 
 if [ -z "$1" ]; then
-	if action="$(nsl list stop)"; then
-		dkr "$action"
+	if kb="$(nsl us mx)"; then
+		keyboard-setter.sh "$kb"
 		exit "$?"
 	else
 		exit 1
@@ -34,7 +35,7 @@ if [ -z "$1" ]; then
 fi
 
 case "$1" in
-s | stop) stop_containers ;;
-l | list) list_containers ;;
+us) us_kb ;;
+mx) mx_kb ;;
 h | help | *) print_usage ;;
 esac

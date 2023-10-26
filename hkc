@@ -14,6 +14,8 @@ export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 # ----------------------- vars
 APPS_FILE="${HOME}/.herokuappstemp"
 DYNOS_FILE="${HOME}/.herokudynostemp"
+#------------------------ todo
+# - Enable to run from DMENU
 #-----------------------------
 
 USAGE="USAGE: hkc [ACTION]

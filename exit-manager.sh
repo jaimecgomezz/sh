@@ -12,7 +12,7 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="Usage: sxt [ACTION]
+USAGE="Usage: exit-manager.sh [ACTION]
 
 Action
   -             Enter interactive mode
@@ -26,7 +26,7 @@ print_usage() { echo "$USAGE"; }
 
 if [ -z "$1" ]; then
 	if action="$(nsl lock suspend reboot shutdown exit)"; then
-		sxt "$action"
+		exit-manager.sh "$action"
 		exit "$?"
 	else
 		exit 1
@@ -34,7 +34,7 @@ if [ -z "$1" ]; then
 fi
 
 case "$1" in
-l | lock) lok ;;
+l | lock) screen-locker.sh ;;
 e | exit) i3-msg exit ;;
 r | reboot) systemctl reboot ;;
 S | shutdown) systemctl poweroff ;;

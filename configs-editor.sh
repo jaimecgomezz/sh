@@ -11,7 +11,7 @@
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #-----------------------------
 
-USAGE="USAGE: edt [CONFIG]
+USAGE="USAGE: configs-editor.sh [CONFIG]
 
 CONFIG
   i3,nvim,bash,kitty,zathura,dunst,rofi"

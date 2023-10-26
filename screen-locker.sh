@@ -13,7 +13,7 @@
 P=0
 
 i3lock \
-	--color="1C1E26" \
+	--color="1E1E2E" \
 	--inside-color=282828FF \
 	--insidever-color=282828FF \
 	--insidewrong-color=282828FF \

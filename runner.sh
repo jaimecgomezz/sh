@@ -30,21 +30,30 @@ system exit
 todo
 wallpapers
 pick color
-explain man"
+explain man
+uuid"
+
+_uuid() {
+	cuuid="$(uuid)"
+	echo "$cuuid" | tr -d '\n' | xclip -selection c
+	nfy -t 60000 "$cuuid"
+}
 
 if selection="$(echo "$options" | slc)"; then
 	case "$selection" in
-	"arandr") adr ;;
-	"block pages") blk ;;
-	"docker") dkr ;;
-	"edit configs") edt ;;
-	"keyboard layout") skb ;;
+	"arandr") screens.sh ;;
+	"block pages") blocker.sh ;;
+	"remarkable") remarkable.sh ;;
+	"docker") docker-assistant.sh ;;
+	"edit configs") configs-editor.sh ;;
+	"keyboard layout") keyboard-setter.sh ;;
 	"swicth theme") swc ;;
 	"system exit") sxt ;;
 	"todo") tdo ;;
 	"wallpapers") wal ;;
 	"pick color") xcl ;;
 	"explain man") xpl ;;
+	"uuid") _uuid ;;
 	*) exit 1 ;;
 	esac
 else

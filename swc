@@ -23,9 +23,9 @@ print_usage() { echo "$USAGE"; }
 
 options="nord
 horizon
-paradise"
+paradise
+catppuccin"
 
-set_xresource() { sed -i "s/.*theme.*/#include \".Xresources.d\/${1}\" \/\* theme \*\//g" "$HOME/.Xresources"; }
 set_fzf() { sed -i "s/^source.*fzf.*/source \"\$HOME\/.config\/fzf\/${1}.config\"/g" "$HOME/.bashrc"; }
 set_rofi() { sed -i "s/@theme.*/@theme \"${1}.rasi\"/g" "$HOME/.config/rofi/config.rasi"; }
 set_kitty() { sed -i "s/^include.*/include ${1}.conf/g" "$HOME/.config/kitty/kitty.conf"; }
@@ -48,12 +48,12 @@ set_i3() {
 		-e "s/\(.*\)\(client.focused.*\)/# \2/" \
 		-e "s/\(.*\)\(client.focused.*\)# ""$1""/\2 # ""$1""/" \
 		"$HOME/.config/i3/config"
+	i3-msg reload
 }
 set_bash() { sed -i "s/\(export THEME\=\).*/\1""$1""/" "$HOME/.bashrc"; }
 
 set_nord() {
 	set_bash "nord"
-	set_xresource "nord"
 	set_nvim "nord" "nord"
 	set_rofi "nord"
 	set_kitty "nord"
@@ -70,7 +70,6 @@ set_nord() {
 
 set_paradise() {
 	set_bash "paradise"
-	set_xresource "paradise"
 	set_nvim "paradise" "auto"
 	set_rofi "paradise"
 	set_kitty "paradise"
@@ -87,8 +86,7 @@ set_paradise() {
 
 set_horizon() {
 	set_bash "horizon"
-	set_xresource "horizon"
-	set_nvim "horizon" "auto"
+	set_nvim "horizon-dark" "horizon"
 	set_rofi "horizon"
 	set_kitty "horizon"
 	set_zathura "horizon"
@@ -98,7 +96,26 @@ set_horizon() {
 	set_lok "1C1E26"
 	set_slack "#232530,#101010,#FAB28E,#1C1E26,#E95379,#FDF0ED,#F43E5C,#E9436F,#F43E5C,#16161C"
 	set_insomnia "One Dark"
+	set_i3 "horizon"
 	wal "$HOME/pictures/walls/blood/b-380.png"
+}
+
+set_catppuccin() {
+	set_bash "catppuccin"
+	set_nvim "catppuccin-mocha" "auto"
+	set_rofi "catppuccin"
+	set_kitty "catppuccin"
+	set_zathura "catppuccin"
+	set_spotify "Sleek" "Elementary"
+	set_fzf "catppuccin"
+	set_bat "catppuccin"
+	set_lok "1E1E2E"
+	set_slack "#1E1E2E,#F8F8FA,#A6E3A1,#1E1E2E,#11111B,#CDD6F4,#A6E3A1,#EBA0AC,#1E1E2E,#CDD6F4"
+	set_insomnia "Catppuccin Mocha"
+	# TODO: define a catppuccin specific theme
+	set_i3 "paradise"
+	wal "$HOME/pictures/walls/catppuccin/mandelbrot.png"
+
 }
 
 theme="$1"
@@ -113,5 +130,6 @@ case "$theme" in
 nord) set_nord ;;
 paradise) set_paradise ;;
 horizon) set_horizon ;;
+catppuccin) set_catppuccin ;;
 *) print_usage ;;
 esac

@@ -8,10 +8,13 @@
 # Requires:
 #   - slc (custom script)
 #   - hsetroot
+# -------------------- prepare
+# Reload bashrc to get latest THEME
+. /home/thbrd/.bashrc
 #------------------- protected
 export PNAME="${PNAME:-$(ps --no-headers -o comm $PPID)}"
 #------------------------ vars
-THEME="${1:-$THEME}"
+CTHEME="${1:-$THEME}"
 WALLPAPERS="${HOME}/pictures/walls"
 SYMBOLIC="${HOME}/pictures/wallpaper"
 #-----------------------------
@@ -35,21 +38,21 @@ set_wal() {
 }
 
 # Translate theme to wallpaper folder when they dont match
-case "$THEME" in
-horizon) THEME=blood ;;
-paradise) THEME=dark ;;
+case "$CTHEME" in
+horizon) CTHEME=blood ;;
+paradise) CTHEME=dark ;;
 esac
 
 # If first argyment is a valid file, set it as wallpaper
-if [ -r "$THEME" ]; then
-	set_wal "$THEME"
+if [ -r "$CTHEME" ]; then
+	set_wal "$CTHEME"
 	exit $?
 # Look for wallpapers within the selected theme and, if second argument is
 # provided is assumed to be a previously selected wallpaper so we can continue
 # exploring wallpapers from that point on
-elif wallpaper="$(find "$WALLPAPERS/$THEME"/* -maxdepth 1 -type f -printf '%f\n' | slc -select "$2")"; then
-	set_wal "$WALLPAPERS/$THEME/$wallpaper"
-	wal "$THEME" "$wallpaper"
+elif wallpaper="$(find "$WALLPAPERS/$CTHEME"/* -maxdepth 1 -type f -printf '%f\n' | slc -select "$2")"; then
+	set_wal "$WALLPAPERS/$CTHEME/$wallpaper"
+	wal "$CTHEME" "$wallpaper"
 else
 	exit 1
 fi
