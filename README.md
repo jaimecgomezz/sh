@@ -4,25 +4,21 @@ collection of personal scripts
 
 - [tdo](tdo): Simple to-do list.
 - [xcl](xcl): Pick screen colors.
-- [sux](sux): Run scripts as sudo.
-- [sxt](sxt): System exit manager.
-- [edt](edt): Easily edit any config file.
-- [blk](blk): Easily block internet pages.
-- [rrr](rrr): Easily run any of this scripts.
-- [skb](skb): Easily set your keyboard layout.
 - [swc](swc): Easily colorschemes across the OS.
 - [nfy](nfy): Easily send predefined notifications.
-- [ppp](ppp): Easily install scripts' dependencies.
 - [wal](wal): Easily set your wallpaper. See [walls](https://github.com/jaimecgomezz/walls).
-- [lok](lok): Lock screen. Inspired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
-- [dkr](dkr): Easily run common Docker commands.
-- [adr](adr): Easily set predefined xrandr configs.
 - [dkc](dkc): Easily run common Docker Compose commands.
 - [xpl](xpl): Easily access man pages in their PDF format.
 - [slc](slc): Select interactively based on caller context.
-- [pmo](pmo): Simple pomodoro manager written in POSIX shell.
 - [nsl](nsl): Echo arguments, each in new lines and [slc](slc) them.
 - [fch](fch): A fetch written in POSIX shell without any external commands. [Source](https://github.com/6gk/fet.sh).
+- [exit-manager.sh](exit-manager.sh): System exit manager.
+- [runner.sh](runner.sh): Easily run any of this scripts.
+- [screens.sh](screens.sh): Easily set predefined xrandr configs.
+- [configs-editor.sh](configs-editor.sh): Easily edit any config file.
+- [keyboard-setter.sh](keyboard-setter.sh): Easily set your keyboard layout.
+- [docker-assistant.sh](docker-assistant.sh): Easily run common Docker commands.
+- [screen-locker.sh](screen-locker.sh): Lock screen. Inspired by @alfunx [lock](https://github.com/alfunx/.dotfiles/blob/master/.bin/lock).
 
 ### Extras
 
@@ -32,18 +28,17 @@ collection of personal scripts
 
 ### Requirements
 
-[yay](https://github.com/Jguer/yay), [i3lock-color](https://github.com/Raymo111/i3lock-color), [notify-send.sh](https://github.com/vlevit/notify-send.sh), [xorg-setxkbmap](https://github.com/freedesktop/xorg-setxkbmap), [dmenu](https://tools.suckless.org/dmenu/), [fzf](https://github.com/junegunn/fzf), [polkit](https://gitlab.freedesktop.org/polkit/polkit), [hsetroot](https://github.com/himdel/hsetroot), [jq](https://github.com/stedolan/jq), and [zathura](https://git.pwmt.org/pwmt/zathura) with [PDF support](https://git.pwmt.org/pwmt/zathura-pdf-mupdf).
+[yay](https://github.com/Jguer/yay), [i3lock-color](https://github.com/Raymo111/i3lock-color), [notify-send.sh](https://github.com/vlevit/notify-send.sh), [xorg-setxkbmap](https://github.com/freedesktop/xorg-setxkbmap), [dmenu](https://tools.suckless.org/dmenu/), [fzf](https://github.com/junegunn/fzf), [hsetroot](https://github.com/himdel/hsetroot), [jq](https://github.com/stedolan/jq), and [zathura](https://git.pwmt.org/pwmt/zathura) with [PDF support](https://git.pwmt.org/pwmt/zathura-pdf-mupdf).
 
 ```sh
 ~ $ git clone https://github.com/jaimecgomezz/sh
 ~ $ export PATH="$PATH:~/sh" # Available in current terminal
 ~ $ echo "PATH=\"$PATH:~/sh\"" >> .profile # Available permanentely
-~ $ ppp i # install dependencies
 ```
 
 ## FAQ
 
-1. Why `rrr`?
+1. Why `runner.sh`?
 
    I have a special key binding within my WM config that allows me to trigger `rrr` and quickly access any of my scripts and enter their interactive mode without the need to open a console.
 

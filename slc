@@ -23,6 +23,6 @@ Arg
 print_usage() { echo "$USAGE"; }
 
 case "$PNAME" in
-systemd) $DMENU "$@" ;;
+i3 | systemd) $DMENU "$@" ;;
 *) $FZF ;;
 esac

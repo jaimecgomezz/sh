@@ -42,13 +42,11 @@ _uuid() {
 if selection="$(echo "$options" | slc)"; then
 	case "$selection" in
 	"arandr") screens.sh ;;
-	"block pages") blocker.sh ;;
-	"remarkable") remarkable.sh ;;
 	"docker") docker-assistant.sh ;;
 	"edit configs") configs-editor.sh ;;
 	"keyboard layout") keyboard-setter.sh ;;
 	"swicth theme") swc ;;
-	"system exit") sxt ;;
+	"system exit") exit-manager.sh ;;
 	"todo") tdo ;;
 	"wallpapers") wal ;;
 	"pick color") xcl ;;
